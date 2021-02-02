@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hw1-health-app-ingress
+  annotations:
+    kubernates.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: arch.homework
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: hw1-health-app-service
+              port:
+                name: web

@@ -1,0 +1,46 @@
+plugins {
+    id 'idea'
+    id 'java'
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+}
+
+idea {
+    project {
+        languageLevel = 1_8
+    }
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+allprojects {
+    group "ru.otus"
+
+    repositories {
+        mavenCentral()
+    }
+
+    apply plugin: "io.spring.dependency-management"
+    dependencyManagement {
+        dependencies {
+            imports {
+                mavenBom("org.springframework.boot:spring-boot-dependencies:${Versions.SpringBoot}")
+            }
+            dependency("org.springframework.boot:spring-boot-starter-actuator:${Versions.Actuator}")
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            failOnVersionConflict()
+        }
+
+        resolutionStrategy {
+            force("javax.servlet:servlet-api:2.4")
+            force("commons-logging:commons-logging:1.1.1")
+            force("commons-lang:commons-lang:2.5")
+        }
+    }
+}
+

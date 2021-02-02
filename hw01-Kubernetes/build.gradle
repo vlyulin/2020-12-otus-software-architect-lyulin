@@ -1,0 +1,30 @@
+plugins {
+    id 'war'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    providedRuntime
+//    compile.exclude module: 'spring-boot-starter-tomcat'
+//    compile.exclude group: 'org.apache.tomcat'
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:2.4.2")
+//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+//    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
+
+// https://docs.gradle.org/current/userguide/war_plugin.html
+war {
+  from 'src/main/resources/static' // adds a file-set to the root of the archive
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'SoftwareArchitect'
+include 'hw01-Kubernetes'
+

@@ -1,0 +1,86 @@
+---------------------------------------------------------------------
+Размещение образов на Docker Hub
+---------------------------------------------------------------------
+https://dker.ru/docs/docker-engine/learn-by-example/store-images-on-docker-hub/
+
+---------------------------------------------------------------------
+Start
+---------------------------------------------------------------------
+https://medium.com/@vishal.sharma./deploy-a-sample-war-java-application-on-docker-25729d4840d5
+https://www.javainuse.com/devOps/docker/docker-war
+https://codefresh.io/docs/docs/learn-by-example/java/gradle/
+
+---------------------------------------------------------------------
+to use only the server's host name to access the web application
+---------------------------------------------------------------------
+https://www.codejava.net/servers/tomcat/tomcat-how-to-set-web-application-context-path-as-server-root
+http://hostname:port/
+
+---------------------------------------------------------------------
+Docker explore
+---------------------------------------------------------------------
+docker exec -t -i mycontainer /bin/bash
+
+---------------------------------------------------------------------
+Deploying Spring Based WAR Application to Docker
+---------------------------------------------------------------------
+https://www.javainuse.com/devOps/docker/docker-war
+
+---------------------------------------------------------------------
+Debugging a Dockerfile
+---------------------------------------------------------------------
+https://subscription.packtpub.com/book/virtualization_and_cloud/9781787286986/6/ch06lvl1sec38/debugging-a-dockerfile
+
+FROM alpine
+RUN ls -lha /home
+RUN ls -lha /vars
+CMD echo Hello world
+
+---------------------------------------------------------------------
+How can I inspect the file system of a failed `docker build`?
+---------------------------------------------------------------------
+https://stackoverflow.com/questions/26220957/how-can-i-inspect-the-file-system-of-a-failed-docker-build
+
+RUN ls -r /home/gradle/src > /tmp/build_libs.txt <-- Добавить в Dockerfile
+docker run --rm 7a3f28c077cf cat /tmp/build_libs.txt <-- Выполнить, чтобы посмотреть
+
+-- Это вывод Docker image build -t vl-image .
+
+C:\_P\OTUSSoftArch\2020-12-otus-software-architect-lyulin\hw01-Kubernetes>Docker image build -t vl-image .
+Sending build context to Docker daemon  16.32MB
+Step 1/9 : FROM gradle:4.7.0-jdk8-alpine AS build
+ ---> f438b7d58d0a
+Step 2/9 : COPY --chown=gradle:gradle ./src /home/gradle/src
+ ---> Using cache
+ ---> 52f11d1ce421
+Step 3/9 : WORKDIR /home/gradle/src
+ ---> Using cache
+ ---> 50f11388c1f4
+Step 4/9 : RUN gradle build --no-daemon
+ ---> Using cache
+ ---> aa1a3543bec6
+Step 5/9 : RUN ls -r /home/gradle/src > /tmp/build_libs.txt
+ ---> Running in 4112de82962d
+Removing intermediate container 4112de82962d
+--------------------------------------------------------------------------------------------------
+ ---> 7a3f28c077cf <-- Брать этот для команды docker run --rm 7a3f28c077cf cat /tmp/build_libs.txt
+--------------------------------------------------------------------------------------------------
+Step 6/9 : From tomcat:8.0.51-jre8-alpine
+ ---> fcc5ace83900
+Step 7/9 : RUN rm -rf /usr/local/tomcat/webapps/*
+ ---> Using cache
+ ---> 26b48f929dbb
+Step 8/9 : COPY --from=build /home/gradle/src/build/libs/hw01-Kubernetes.war /usr/local/tomcat/webapps/
+COPY failed: stat home/gradle/src/build/libs/hw01-Kubernetes.war: file does not exist
+
+---------------------------------------------------------------------
+Can't resolve plugins from plugin repository after Gradle 4.3 upgrade
+---------------------------------------------------------------------
+https://github.com/gradle/gradle/issues/3326
+pluginManagement section to the start of the settings.gradle file:
+pluginManagement {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        gradlePluginPortal()
+    }
+}

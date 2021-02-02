@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hw1-health-app-service
+spec:
+  selector:
+    app: hw1-health-app
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: web
+  type: NodePort

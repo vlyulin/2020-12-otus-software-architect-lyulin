@@ -1,0 +1,25 @@
+# FROM gradle:4.7.0-jdk8-alpine AS build
+FROM gradle:6.8.1-jdk15 AS build
+COPY --chown=gradle:gradle ./hw01-Kubernetes/src /home/gradle/hw01-Kubernetes/src
+COPY --chown=gradle:gradle ./hw01-Kubernetes/build.gradle /home/gradle/hw01-Kubernetes 
+COPY --chown=gradle:gradle ./buildSrc /home/gradle/buildSrc
+COPY --chown=gradle:gradle build.gradle /home/gradle
+COPY --chown=gradle:gradle settings.gradle /home/gradle
+
+WORKDIR /home/gradle
+RUN gradle :hw01-Kubernetes:build --no-daemon
+# Debug
+# RUN ls -lR /home/gradle/hw01-Kubernetes/build
+
+From tomcat:8.0.51-jre8-alpine
+# RUN rm -rf /usr/local/tomcat/webapps/*
+COPY --from=build /home/gradle/hw01-Kubernetes/build/libs/hw01-Kubernetes.war /usr/local/tomcat/webapps/
+# expose admin page
+# https://stackoverflow.com/questions/44538447/docker-tomcat-editing-configuration-files-through-dockerfile
+USER root
+COPY ./hw01-Kubernetes/tomcat/tomcat-users.xml /usr/local/tomcat/conf/
+COPY ./hw01-Kubernetes/tomcat/context.xml /usr/local/tomcat/webapps/manager/META-INF/
+EXPOSE 8080
+# CMD ["cp", "/usr/local/tomcat/webapps.dist", "/usr/local/tomcat/webapps"]
+CMD ["catalina.sh","run"]
+

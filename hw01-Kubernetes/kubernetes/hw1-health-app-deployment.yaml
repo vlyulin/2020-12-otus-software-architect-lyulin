@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: hw1-health-app-deployment
+spec:
+    replicas: 2
+    selector:
+       matchLabels:
+          app: hw1-health-app
+    template:
+       metadata:
+          labels:
+             app: hw1-health-app
+       spec:
+          containers:
+          - name: hw1-health-app
+            image: vlyulin/hw1-health-app:latest
+            ports:
+              - name: web
+                containerPort: 8080
+            livenessProbe:
+              httpGet:
+                port: 8080
+                path: hw01-Kubernetes/health
+              initialDelaySeconds: 10
+              periodSeconds: 5
+

@@ -1,0 +1,15 @@
+spring:
+  data:
+    rest:
+      base-path: /
+management:
+  endpoints:
+    web:
+      base-path: /
+  endpoint:
+    health:
+      status:
+        order: DOWN, OUT_OF_SERVICE, UNKNOWN, OK, UP
+      show-details: never
+      enabled: true
+
