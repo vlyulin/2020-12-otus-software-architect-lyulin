@@ -89,9 +89,9 @@ http://localhost/hw01-Kubernetes/health
 `127.0.0.1 arch.homework`
 
 Проверяем:  
-`curl -v http://arch.homework/hw01-Kubernetes/health`  
+`curl -v http://arch.homework/otusapp/vlyulin/health`  
 или  
-`http://arch.homework/hw01-Kubernetes/health`
+`http://arch.homework/health`
 
 
 

@@ -3,13 +3,20 @@ kind: Ingress
 metadata:
   name: hw1-health-app-ingress
   annotations:
-    kubernates.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /hw01-Kubernetes/$2
 spec:
   rules:
   - host: arch.homework
     http:
       paths:
-        - path: /
+        - path: /()(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: hw1-health-app-service
+              port:
+                name: web
+        - path: /otusapp/vlyulin($|/)(.*)
           pathType: Prefix
           backend:
             service:
