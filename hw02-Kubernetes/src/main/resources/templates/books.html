@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link data-th-href="@{~/css/bootstrap.min.css}" rel="stylesheet">
+    <link data-th-href="@{~/css/main.css}" rel="stylesheet">
+</head>
+
+<body>
+<h1>Library on thymeleaf + Spring Security + ACL + Aspects + Custom Expression + Docker</h1>
+<h2>Books (<span sec:authentication="name"></span>):</h2>
+
+<table class="books" width="100%">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col" align= "left">#</th>
+        <th scope="col" align= "left">Name</th>
+        <th scope="col" align= "left">Author</th>
+        <th scope="col" align= "left">Pages</th>
+        <th scope="col" align= "left">Genre</th>
+        <th scope="col" align= "left">Publishing house</th>
+        <th scope="col" align= "left">Publishing year</th>
+        <th scope="col" align= "left">Age limit</th>
+        <th scope="col" align= "left">Operations</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}">book.id</td>
+        <td th:text="${book.name}">book.name</td>
+        <td th:text="${book.author.name}">book.author.name</td>
+        <td th:text="${book.pages}">book.pages</td>
+        <td th:text="${book.genre.meaning}">book.genre.meaning</td>
+        <td th:text="${book.publishingHouse.name}">book.publishingHouse.name</td>
+        <td th:text="${book.publishingYear}">book.publishingYear</td>
+        <td th:text="${book.ageLimit}">book.ageLimit</td>
+        <td>
+            <!-- только администратор может редактировать и удалять книги -->
+            <div sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{~/books/edit/{id}(id=${book.id})}" role="button">Edit</a><br>
+                <a th:href="@{~/books/delete/{id}(id=${book.id})}" role="button">Delete</a> <br>
+            </div>
+            <a th:href="@{'~/books/'+${book.id}+'/comments'}" role="button">Comments</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<div>
+    <!-- только администратор может добавлять книги -->
+    <th:block sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{~/book}" href="book.html" style="margin-right: 3px">New book</a>
+    </th:block>
+    <a href='/'>Back</a>
+</div>
+</body>

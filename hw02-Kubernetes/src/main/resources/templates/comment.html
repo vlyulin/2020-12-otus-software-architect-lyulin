@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link data-th-href="@{~/css/bootstrap.min.css}" rel="stylesheet">
+  <link data-th-href="@{~/css/main.css}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div id="title">
+        <h1>Library on thymeleaf + Spring Security + ACL + Aspects + Custom Expression + Docker</h1>
+        <h2>Comment (<span sec:authentication="name"></span>):</h2>
+      </div>
+    </div>
+    <div class="row" th:each="comment : ${comments}">
+      <!-- https://stackoverflow.com/questions/45392650/conditional-thaction-in-spring -->
+      <form class="comment-form" method="post"
+            th:action="@{'~/books/' + ${bookId} + '/comment/' + ${comment.id} + '/save'}" width="50%"
+      >
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <textarea id="commentText" name="commentText" rows="4" cols="50" data-th-text="${comment.comment}">Comment ...</textarea>
+              </td>
+            </tr>
+          <tr>
+            <td>
+              <input type="hidden" id="bookId" name="bookId" th:value="${bookId}">
+              <input type="hidden" id="commentId" name="commentId" th:value="${comment.id}">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button type="submit" name="action" value="Cancel" style="margin-left: 3px">Cancel</button>
+              <button type="submit" name="action" value="Submit" style="margin-left: 3px">Save</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "74b7b7ee-c637-4fc2-a883-1ffefce47006",
+		"name": "hw02-library-app-collection",
+		"description": "Домашнее задание\r\nИнфраструктурные паттерны\r\nСделать простейший RESTful CRUD по созданию, удалению, просмотру и обновлению пользователей.\r\nПример API - https://app.swaggerhub.com/apis/otus55/users/1.0.0\r\n\r\nДобавить базу данных для приложения.\r\nКонфигурация приложения должна хранится в Configmaps.\r\nДоступы к БД должны храниться в Secrets.\r\nПервоначальные миграции должны быть оформлены в качестве Job-ы, если это требуется.\r\nIngress-ы должны также вести на url arch.homework/ (как и в прошлом задании)\r\n\r\nНа выходе должны быть предоставлена\r\n1) ссылка на директорию в github, где находится директория с манифестами кубернетеса\r\n2) инструкция по запуску приложения.\r\n- команда установки БД из helm, вместе с файлом values.yaml.\r\n- команда применения первоначальных миграций\r\n- команда kubectl apply -f, которая запускает в правильном порядке манифесты кубернетеса\r\n3) Postman коллекция, в которой будут представлены примеры запросов к сервису на создание, получение, изменение и удаление пользователя. Важно: в postman коллекции использовать базовый url - arch.homework.\r\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST /user Создание пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "788ee198-6a89-40d2-9539-288427d7a32a",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  pm.collectionVariables.set(\"userId\", responseBody)\r",
+							"  var uId = pm.collectionVariables.get(\"userId\");\r",
+							"  console.log(\"userId = \" + uId);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "User07",
+							"type": "text"
+						},
+						{
+							"key": "login",
+							"value": "User07",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/user",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user/{userId} Получение пользователя",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /user/{userId} Изменение пользователя",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "UserModified",
+							"type": "text"
+						},
+						{
+							"key": "login",
+							"value": "UserModified",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "77778888",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE user/{userId} Удаление пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b29e06c4-43b1-43f2-8ce7-7cc661c368b6",
+						"exec": [
+							"pm.test(\"Status code is 204\", () => {\r",
+							"  pm.response.to.have.status(204);\r",
+							"\r",
+							"  pm.collectionVariables.set(\"userId\", -1)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "143dc1e1-6828-47d5-ae0c-96a15ab91290",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "43dd5a10-4c2c-4479-a0f3-058700a0cb7b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "82af66eb-69b5-4124-8c4a-e8aeb0431f24",
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "d5ba89d5-db4a-4c71-bf84-4d65935bb65a",
+			"key": "baseUrl",
+			"value": "arch.homework",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

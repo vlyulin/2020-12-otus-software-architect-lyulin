@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link data-th-href="@{~/css/bootstrap.min.css}" rel="stylesheet">
+  <link data-th-href="@{~/css/main.css}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div id="title">
+        <h1>Library on thymeleaf + Spring Security + ACL + Aspects + Custom Expression + Docker</h1>
+        <h2>Comments (<span sec:authentication="name"></span>):</h2>
+      </div>
+      <table id="comments" class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Comment</th>
+          <th scope="col">Created by</th>
+          <th scope="col">Creation date</th>
+          <th scope="col">Updated by</th>
+          <th scope="col">Last update date</th>
+          <th scope="col">Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- https://www.baeldung.com/spring-thymeleaf-conditionals -->
+        <tr th:each="comment : ${comments}">
+          <td data-th-text="${comment.id}">comment.id</td>
+          <td data-th-text="${comment.comment}">comment</td>
+          <td data-th-text="${comment.createdBy}?${comment.createdBy.name}:''">comment.createdBy.name</td>
+          <td data-th-text="${comment.creationDate}">comment.creationDate</td>
+          <td data-th-text="${comment.lastUpdatedBy}?${comment.lastUpdatedBy.name}:''">comment.lastUpdatedBy.name</td>
+          <td data-th-text="${comment.lastUpdateDate}">comment.lastUpdateDate</td>
+          <td>
+            <!-- https://stackoverflow.com/questions/43866755/how-to-evaluate-variable-expression-in-spring-security-hasrole/54700949#54700949
+                 https://stackoverflow.com/questions/37409629/attempted-to-call-method-expressionjava-lang-string-on-null-context-object
+            -->
+            <div th:if="${authentication != null and authentication.getPrincipal() != null}" sec:authorize="isAuthenticated()">
+                <th:block th:with="secOwner=${#authentication?.getPrincipal()?.getUsername() eq comment.createdBy.login}">
+                  <!-- только владелец может редактировать или удалять комментарий -->
+                  <a sec:authorize="${#authorization?.expression(#vars.secOwner) or hasRole('ROLE_ADMIN')}"
+                     th:href="@{'~/books/'+${comment.bookId}+'/comment/'+${comment.id}+'/edit'}">Edit</a> <br>
+                  <a sec:authorize="${#authorization?.expression(#vars.secOwner) or hasRole('ROLE_ADMIN')}"
+                     th:href="@{'~/books/'+${comment.bookId}+'/comment/'+${comment.id}+'/delete'}">Delete</a><br>
+                </th:block>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <form id="f1" th:action="@{'~/books/' + ${bookId} + '/comment/new'}" method="get" role="form" class="form-group">
+        <input type="submit" value="New comment" class="btn btn-primary" />
+      </form>
+      <form id="f2" th:action="@{~/books}" method="get" role="form" class="form-group">
+        <input type="submit" value="Back" class="btn btn-primary" style="margin-left: 3px"/>
+      </form>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+
+<div class="toolbar" role="banner">
+  <div class="spacer"></div>
+        <h1>Library on thymeleaf + Spring Security + ACL + Aspects + Custom Expression + Docker</h1>
+  <div class="spacer"></div>
+</div>
+
+<!-- https://www.thymeleaf.org/doc/articles/standardurlsyntax.html -->
+<!-- Server-relative URLs -->
+<div class="container">
+  <div class="row">
+          <ul class="text-center list-inline py-3">
+            <li class="list-inline-item">
+              <a th:href="@{~/users}" href="users.html">Users</a>
+                </li>
+            <li class="list-inline-item">
+              <a th:href="@{~/books}" href="books.html">Books</a>
+                </li>
+              <li class="list-inline-item">
+                  <a th:href="@{~/logout}">Logout</a>
+              </li>
+          </ul>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

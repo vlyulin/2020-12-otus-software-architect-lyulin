@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Spring Boot Reading List</title>
+    <link data-th-href="@{~/css/bootstrap.min.css}" rel="stylesheet"/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" data-th-href="@{~/thumbnail-gallery.css}"/>
+</head>
+<body>
+
+<form action="#" method="post" th:action="@{~/books/save}"><!-- Navigation -->
+    <div class="container">
+        <div class="navbar-header">
+            <h1>Library on thymeleaf + Spring Security + ACL + Aspects + Custom Expression + Docker</h1>
+            <h2>Books (<span sec:authentication="name"></span>):</h2>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="container">
+                <table class="table table-hover">
+                    <tbody th:each="book : ${book}">
+                    <tr>
+                        <td class="col-xs-1 text-left">Title:</td>
+                        <td class="text-left"><input class="form-control" id="name" name="name"
+                                                       th:value="${book.name}" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-1 text-left">Author:</td>
+                        <td class="text-left">
+                            <!-- Не разобрался как подставить !book.author.empty and -->
+                            <select fclass="form-control" id="author" name="author">
+                                <option  th:each="author : ${authors}"
+                                         th:value="${author.id}"
+                                         th:text="${author.name}"
+                                         th:selected="${book.author.id == author.id}"
+                                >
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-1 text-left">Pages:</td>
+                        <td class="text-left"><input class="form-control" id="pages" name="pages"
+                                                     th:value="${book.pages}" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-1 text-left">Genre:</td>
+                        <td class="text-left">
+                            <!-- https://www.baeldung.com/thymeleaf-select-option -->
+                            <!-- https://www.baeldung.com/thymeleaf-list -->
+                            <select fclass="form-control" id="genre" name="genre" >
+                                <option  th:each="genre : ${genres}"
+                                         th:value="${genre.key.lookupCode}"
+                                         th:text="${genre.meaning}"
+                                         th:selected="${book.genre.key.lookupCode == genre.key.lookupCode}"
+                                >
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-1 text-left">Publishing house:</td>
+                        <td class="text-left">
+                            <!-- !book.publishingHouse.empty -->
+                            <select fclass="form-control" id="pubhouse" name="pubhouse">
+                                <option  th:each="pubhouse : ${pubhouses}"
+                                         th:value="${pubhouse.id}"
+                                         th:text="${pubhouse.name}"
+                                         th:selected="${book.publishingHouse.id == pubhouse.id}"
+                                >
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-1 text-left">Publishing year:</td>
+                        <td class="text-left"><input class="form-control" id="publishingYear" name="publishingYear"
+                                                     th:value="${book.publishingYear}" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-1 text-left">Restriction:</td>
+                        <td class="text-left">
+                            <select fclass="form-control" id="age_limit" name="age_limit">
+                                <option th:selected="${book.ageLimit == '0+'}"
+                                >0+</option>
+                                <option th:selected="${book.ageLimit == '6+'}"
+                                >6+</option>
+                                <option th:selected="${book.ageLimit == '12+'}"
+                                >12+</option>
+                                <option th:selected="${book.ageLimit == '16+'}"
+                                >16+</option>
+                                <option th:selected="${book.ageLimit == '18+'}"
+                                >18+</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left"><input name="bookId" th:value="${book.id}" type="hidden"/>
+                            <div class="btn-group">
+                                <button class="btn btn-warning" name="action" type="submit" value="Save">Save</button>
+                                <button class="btn btn-success" name="action" type="submit" value="Cancel" style="margin-left: 3px">Cancel</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

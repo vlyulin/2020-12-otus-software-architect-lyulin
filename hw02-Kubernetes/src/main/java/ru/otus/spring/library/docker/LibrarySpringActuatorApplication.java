@@ -1,0 +1,22 @@
+package ru.otus.spring.library.docker;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+// https://www.codebyamir.com/blog/how-to-deploy-spring-boot-war-to-tomcat
+@SpringBootApplication
+public class LibrarySpringActuatorApplication extends SpringBootServletInitializer {
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(LibrarySpringActuatorApplication.class);
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(LibrarySpringActuatorApplication.class, args);
+	}
+
+}

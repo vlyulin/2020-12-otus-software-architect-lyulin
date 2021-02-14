@@ -1,3 +1,4 @@
 rootProject.name = 'SoftwareArchitect'
 include 'hw01-Kubernetes'
+include 'hw02-Kubernetes'
 

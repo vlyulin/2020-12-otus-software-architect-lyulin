@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+<h1>Library on thymeleaf + Spring Security + ACL + Aspects + Custom Expression + Docker</h1>
+<h2>User:</h2>
+
+<table class="users" th:each="user : ${users}">
+  <tbody>
+  <tr>
+    <td scope="col">#</td>
+    <td th:text="${user.id}">user.id</td>
+  </tr>
+  <tr>
+    <td scope="col">Login</td>
+    <td th:text="${user.login}">user.login</td>
+  </tr>
+  <tr>
+    <td scope="col">Name</td>
+    <td th:text="${user.name}"><a th:href="@{~/user/{userName}(userName=${user.name})}">user.name</a></td>
+  </tr>
+  <tr>
+    <td scope="col">Password</td>
+    <td th:text="${user.password}">user.password</td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<div><a th:href="@{~/}">Home</a></div>
+</body>
