@@ -280,7 +280,8 @@ kubectl port-forward -n kube-system pod/ingress-nginx-controller-558664778f-sdzs
 ```
 http://arch.homework/
 http://arch.homework/health
-http://arch.homework/vlyulin/health
+http://arch.homework/otusapp/vlyulin/health
+http://arch.homework/metrics
 ```
 ### Логины
 
