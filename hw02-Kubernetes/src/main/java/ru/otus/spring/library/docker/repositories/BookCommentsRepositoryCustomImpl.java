@@ -26,7 +26,9 @@ public class BookCommentsRepositoryCustomImpl implements BookCommentsRepositoryC
         Comment comment = new Comment();
         comment.setBookId(bookId);
         comment.setComment(cmt);
-        comment.setCreatedBy(securityService.getUser());
+        if(securityService.getUser() != null) {
+            comment.setCreatedBy(securityService.getUser());
+        }
         comment.setCreationDate(LocalDate.now());
 
         bookCommentsRepository.save(comment);
@@ -39,7 +41,7 @@ public class BookCommentsRepositoryCustomImpl implements BookCommentsRepositoryC
     @Transactional
     public void updateBookComment(long commentId, String cmt) {
         Optional<Comment> optComment = bookCommentsRepository.findById(commentId);
-        if(optComment.isEmpty()) return;
+        if(!optComment.isPresent()) return;
         Comment comment = optComment.get();
         comment.setComment(cmt);
         comment.setLastUpdatedBy(securityService.getUser());

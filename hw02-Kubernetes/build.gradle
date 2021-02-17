@@ -5,6 +5,14 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+// instruct Gradle to process you application's resources
+// https://stackoverflow.com/questions/34963056/getting-the-gradle-build-version-into-spring-boot
+//processResources {
+//    filesMatching('application.properties') {
+//        expand(project.properties)
+//    }
+//}
+
 repositories {
     mavenCentral()
 }

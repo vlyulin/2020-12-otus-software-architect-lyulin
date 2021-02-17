@@ -33,13 +33,14 @@ spring:
 
     datasource:
         platform: postgres
-        url: jdbc:postgresql://localhost:5432/postgres
-        username: postgresadmin
-        password: pswd
-        # driver-class-name: ${DB_DRIVER}
-        # url: ${DB_URL}
-        # username: ${DB_USERNAME}
-        # password: ${DB_PASSWORD}
+        # DB_DRIVER: org.postgresql.Driver
+        # url: jdbc:postgresql://localhost:5432/postgres
+        # username: postgresadmin
+        # password: pswd
+        driver-class-name: ${DB_DRIVER}
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
         schema:
             classpath: schema.sql
         data:

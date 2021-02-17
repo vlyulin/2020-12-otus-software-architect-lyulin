@@ -124,7 +124,7 @@ public class PagesController {
 
         Book book;
         String bookIdStr = request.getParameter("bookId");
-        long bookId = (bookIdStr.isBlank() || bookIdStr.isEmpty()) ? -1 : Long.parseLong(bookIdStr);
+        long bookId = (bookIdStr.isEmpty()) ? -1 : Long.parseLong(bookIdStr);
 
         if (bookId == -1 || bookId == 0) {
             // новая книга
@@ -181,7 +181,7 @@ public class PagesController {
             Model model
     ) {
         Optional<Comment> optComment = bookCommentsRepository.findById(commentId);
-        if (optComment.isEmpty()) return "under_construction"; // TODO: переделать на error page
+        if (!optComment.isPresent()) return "under_construction"; // TODO: переделать на error page
 
         model.addAttribute("action", "Edit");
         model.addAttribute("bookId", bookId);
@@ -195,7 +195,7 @@ public class PagesController {
             Model model
     ) {
         Comment comment = new Comment();
-        comment.setId(-1);
+        // comment.setId(-1);
         model.addAttribute("action", "Edit");
         model.addAttribute("bookId", bookId);
         model.addAttribute("comments", Collections.singletonList(comment));

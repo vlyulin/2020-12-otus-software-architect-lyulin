@@ -1,6 +1,7 @@
 package ru.otus.spring.library.docker.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.spring.library.docker.models.User;
 import ru.otus.spring.library.docker.repositories.UserRepository;
@@ -25,14 +26,12 @@ public class UserRestController {
         String password = request.getParameter("password");
         String name = request.getParameter("name");
 
-        if ( login.isEmpty() || login.isBlank() || password.isEmpty() || password.isBlank() ||
-                name.isEmpty() || name.isBlank()
-        ) {
+        if (login.isEmpty() || password.isEmpty() || name.isEmpty()) {
             throw new RuntimeException("Not all attributes filled.");
         }
 
         User chkUser = userRepository.findByLoginIgnoreCase(login);
-        if( chkUser != null) {
+        if (chkUser != null) {
             throw new RuntimeException("Key (login)=(" + login + ") already exists.");
         }
 
@@ -67,23 +66,26 @@ public class UserRestController {
         String password = request.getParameter("password");
         String name = request.getParameter("name");
 
-        if ( login.isEmpty() || login.isBlank() || password.isEmpty() || password.isBlank() ||
-                name.isEmpty() || name.isBlank()
-        ) {
+        if (login.isEmpty() || password.isEmpty() || name.isEmpty()) {
             throw new RuntimeException("Not all attributes filled.");
         }
 
         User user = userRepository.getOne(userId);
-        if(user == null) {
+        if (user == null) {
             throw new RuntimeException("user not found");
         }
-        // if(!login.isEmpty() && !login.isBlank()) user.setLogin(login);
         // ERROR: update or delete on table "users" violates foreign key constraint
         // "fk_authorities_users" on table "authorities"
-        if(!password.isEmpty() && !password.isBlank()) user.setPassword(password);
-        if(!name.isEmpty() && !name.isBlank()) user.setName(name);
+        if (!password.isEmpty()) user.setPassword(password);
+        if (!name.isEmpty()) user.setName(name);
         userRepository.save(user);
 
         return;
+    }
+
+    @GetMapping("/version")
+    public String getVersion(@Value("${info.build.version}") String version) {
+        if(version == null) return "+2.2";
+        return version;
     }
 }

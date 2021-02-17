@@ -1,6 +1,5 @@
-# From tomcat:8.0.51-jre8-alpine
-From tomcat:10.0-jdk15-openjdk-oracle
-COPY ./hw02-Kubernetes/build/libs/hw02-Kubernetes.war /usr/local/tomcat/webapps/
+From tomcat:8.0.51-jre8-alpine
+COPY ./hw02-Kubernetes/build/libs/hw02-Kubernetes*.war /usr/local/tomcat/webapps/
 # expose admin page
 USER root
 COPY ./hw02-Kubernetes/tomcat/tomcat-users.xml /usr/local/tomcat/conf/

@@ -37,11 +37,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**")
                 .antMatchers("/h2/**")
                 .antMatchers("/user**")
-                .antMatchers("users");
+                .antMatchers("/users");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests().antMatchers("/**").permitAll();
 //        http.csrf().disable()
 //                .authorizeRequests().antMatchers("/book").hasRole("ADMIN")
 //                .and()

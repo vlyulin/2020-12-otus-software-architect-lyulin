@@ -20,7 +20,7 @@ public class Comment implements java.io.Serializable {
     @Column(name = "comment", nullable = false)
     private String comment;
     @OneToOne(targetEntity = User.class)
-    @JoinColumn(name = "created_by", nullable = false)
+    @JoinColumn(name = "created_by", nullable = true)
     private User createdBy;
     @Column(name = "creation_date")
     LocalDate creationDate;
