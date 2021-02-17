@@ -1,59 +1,59 @@
-# Шаги:
+# РЁР°РіРё:
 
-## Проверка сборки приложения
+## РџСЂРѕРІРµСЂРєР° СЃР±РѕСЂРєРё РїСЂРёР»РѕР¶РµРЅРёСЏ
 
-Из директории проекта 2020-12-otus-software-architect-lyulin
-выполнить команду: 
+РР· РґРёСЂРµРєС‚РѕСЂРёРё РїСЂРѕРµРєС‚Р° 2020-12-otus-software-architect-lyulin
+РІС‹РїРѕР»РЅРёС‚СЊ РєРѕРјР°РЅРґСѓ: 
 
 ```gradle :hw02-Kubernetes:build --no-daemon```
-или
+РёР»Рё
 build-hw02-kubernates.bat
 
-## Сборка docker-файла с приложением
+## РЎР±РѕСЂРєР° docker-С„Р°Р№Р»Р° СЃ РїСЂРёР»РѕР¶РµРЅРёРµРј
 
-Из директории проекта 2020-12-otus-software-architect-lyulin выполнить команду:  
+РР· РґРёСЂРµРєС‚РѕСЂРёРё РїСЂРѕРµРєС‚Р° 2020-12-otus-software-architect-lyulin РІС‹РїРѕР»РЅРёС‚СЊ РєРѕРјР°РЅРґСѓ:  
 `Docker image build --rm --file ./hw02-Kubernetes/Dockerfile.hw02-Kubernetes -t hw02-library-app .`  
-Или  
+РР»Рё  
 `make-image-hw02-library-app.bat` 
 
-## Разместить образ в DockerHub https://hub.docker.com/
+## Р Р°Р·РјРµСЃС‚РёС‚СЊ РѕР±СЂР°Р· РІ DockerHub https://hub.docker.com/
 
 ```
 docker images
-docker tag <Image ID для hw1-health-app> vlyulin/hw02-library-app:latest
+docker tag <Image ID РґР»СЏ hw1-health-app> vlyulin/hw02-library-app:latest
 docker tag ca009361582a vlyulin/hw02-library-app:latest
 docker login
 docker push vlyulin/hw02-library-app
 ```
-В DockerHub появится репозиторий vlyulin/hw02-library-app
+Р’ DockerHub РїРѕСЏРІРёС‚СЃСЏ СЂРµРїРѕР·РёС‚РѕСЂРёР№ vlyulin/hw02-library-app
 
-Сделано по инструкции: https://dker.ru/docs/docker-engine/get-started-with-docker/tag-push-pull-your-image/
+РЎРґРµР»Р°РЅРѕ РїРѕ РёРЅСЃС‚СЂСѓРєС†РёРё: https://dker.ru/docs/docker-engine/get-started-with-docker/tag-push-pull-your-image/
 
 Public view: https://hub.docker.com/repository/docker/vlyulin/hw02-library-app
 
-## Запустить minikube
+## Р—Р°РїСѓСЃС‚РёС‚СЊ minikube
 `minikube start`
 
-## Добавление Ingress
+## Р”РѕР±Р°РІР»РµРЅРёРµ Ingress
 `minikube addons enable ingress`
-Проверить установку ingress командой:  
+РџСЂРѕРІРµСЂРёС‚СЊ СѓСЃС‚Р°РЅРѕРІРєСѓ ingress РєРѕРјР°РЅРґРѕР№:  
 `kubectl get pods -A | grep ingress`
 
-## Установить Helm
+## РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Helm
 
-Инструкция по установке Helm:  
+РРЅСЃС‚СЂСѓРєС†РёСЏ РїРѕ СѓСЃС‚Р°РЅРѕРІРєРµ Helm:  
 https://github.com/helm/helm/releases/latest
 
-### Добавить репозиторий bitnami, где хранятся официальные charts
+### Р”РѕР±Р°РІРёС‚СЊ СЂРµРїРѕР·РёС‚РѕСЂРёР№ bitnami, РіРґРµ С…СЂР°РЅСЏС‚СЃСЏ РѕС„РёС†РёР°Р»СЊРЅС‹Рµ charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
-## Создать chart для приложения hw02-library-app
+## РЎРѕР·РґР°С‚СЊ chart РґР»СЏ РїСЂРёР»РѕР¶РµРЅРёСЏ hw02-library-app
 cd ./hw02-Kubernetes/kubernetes
 helm create hw02-library-app
 
-### Добавить в чарте зависимость postgresql. 
+### Р”РѕР±Р°РІРёС‚СЊ РІ С‡Р°СЂС‚Рµ Р·Р°РІРёСЃРёРјРѕСЃС‚СЊ postgresql. 
 
-Изменения вносятся в hw02-library-helm\hw02-library-app\Chart.yaml  
+РР·РјРµРЅРµРЅРёСЏ РІРЅРѕСЃСЏС‚СЃСЏ РІ hw02-library-helm\hw02-library-app\Chart.yaml  
 ```
 dependencies:
     - name: postgresql
@@ -64,22 +64,22 @@ dependencies:
         - hw02-postgres
 ```
 
-**Note:** version - это версия чарта, а не приложения.  
+**Note:** version - СЌС‚Рѕ РІРµСЂСЃРёСЏ С‡Р°СЂС‚Р°, Р° РЅРµ РїСЂРёР»РѕР¶РµРЅРёСЏ.  
 
 
-Устанавливаем указанную зависимости. Они складываются в директорию charts/
+РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СѓРєР°Р·Р°РЅРЅСѓСЋ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё. РћРЅРё СЃРєР»Р°РґС‹РІР°СЋС‚СЃСЏ РІ РґРёСЂРµРєС‚РѕСЂРёСЋ charts/
 ```helm dependency update ./hw02-library-app```
 
-## Внесение изменений в templates
+## Р’РЅРµСЃРµРЅРёРµ РёР·РјРµРЅРµРЅРёР№ РІ templates
 
 ### .\2020-12-otus-software-architect-lyulin\hw02-Kubernetes\kubernetes\hw02-library-app\values.yaml 
 
-Указать собранный образ размещенный на Docker hub:  
+РЈРєР°Р·Р°С‚СЊ СЃРѕР±СЂР°РЅРЅС‹Р№ РѕР±СЂР°Р· СЂР°Р·РјРµС‰РµРЅРЅС‹Р№ РЅР° Docker hub:  
 ```
 image:
   repository: vlyulin/hw02-library-app
 ```
-Настраиваем сервис для приложения:
+РќР°СЃС‚СЂР°РёРІР°РµРј СЃРµСЂРІРёСЃ РґР»СЏ РїСЂРёР»РѕР¶РµРЅРёСЏ:
 ```
 service:
   type: NodePort
@@ -87,7 +87,7 @@ service:
   externalPort: 8080
   targetPort: http
 ```
-Настраиваем ingress:
+РќР°СЃС‚СЂР°РёРІР°РµРј ingress:
 ```
 ingress:
   enabled: true
@@ -118,11 +118,11 @@ ingress:
               port:
                 name: web
 ```                
-***Note:*** path: - это что будет указано в броузере, а "nginx.ingress.kubernetes.io/rewrite-target: /hw02-Kubernetes/$2" - это путь, который будет вызван на сервисе hw02-library-app-service
+***Note:*** path: - СЌС‚Рѕ С‡С‚Рѕ Р±СѓРґРµС‚ СѓРєР°Р·Р°РЅРѕ РІ Р±СЂРѕСѓР·РµСЂРµ, Р° "nginx.ingress.kubernetes.io/rewrite-target: /hw02-Kubernetes/$2" - СЌС‚Рѕ РїСѓС‚СЊ, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅ РЅР° СЃРµСЂРІРёСЃРµ hw02-library-app-service
 
-***Note:*** "path: /hw02-Kubernetes/()(.*)" понадобился из-за того, что при переходе по ссылкам в приложении формировался путь http://arch.homework/hw02-Kubernetes/hw02-Kubernetes/...
+***Note:*** "path: /hw02-Kubernetes/()(.*)" РїРѕРЅР°РґРѕР±РёР»СЃСЏ РёР·-Р·Р° С‚РѕРіРѕ, С‡С‚Рѕ РїСЂРё РїРµСЂРµС…РѕРґРµ РїРѕ СЃСЃС‹Р»РєР°Рј РІ РїСЂРёР»РѕР¶РµРЅРёРё С„РѕСЂРјРёСЂРѕРІР°Р»СЃСЏ РїСѓС‚СЊ http://arch.homework/hw02-Kubernetes/hw02-Kubernetes/...
 
-Параметры для приложения:
+РџР°СЂР°РјРµС‚СЂС‹ РґР»СЏ РїСЂРёР»РѕР¶РµРЅРёСЏ:
 ```
 externalPostgresql:
   postgresqlDriver: org.postgresql.Driver
@@ -132,7 +132,7 @@ externalPostgresql:
   postgresqlHost: "postgres"
   postgresqlPort: "5432"
 ```
-И параметры для subchart postgresql:
+Р РїР°СЂР°РјРµС‚СЂС‹ РґР»СЏ subchart postgresql:
 ```
 postgresql:
   enabled: true
@@ -142,11 +142,11 @@ postgresql:
   service:
     port: "5432"
 ```
-***Note:*** Возможно, было бы правильнее из совместить.
+***Note:*** Р’РѕР·РјРѕР¶РЅРѕ, Р±С‹Р»Рѕ Р±С‹ РїСЂР°РІРёР»СЊРЅРµРµ РёР· СЃРѕРІРјРµСЃС‚РёС‚СЊ.
 
 ### ..\2020-12-otus-software-architect-lyulin\hw02-Kubernetes\kubernetes\hw02-library-app\config.yaml 
 
-Создать файл и Добавить секреты:
+РЎРѕР·РґР°С‚СЊ С„Р°Р№Р» Рё Р”РѕР±Р°РІРёС‚СЊ СЃРµРєСЂРµС‚С‹:
 ```
 apiVersion: v1
 kind: Secret
@@ -174,7 +174,7 @@ data:
 ```
 ### ..\2020-12-otus-software-architect-lyulin\hw02-Kubernetes\kubernetes\hw02-library-app\deployment.yaml 
 
-В spec ... template ... spec добавить ожидание, когда поднимется pod с базой postgress
+Р’ spec ... template ... spec РґРѕР±Р°РІРёС‚СЊ РѕР¶РёРґР°РЅРёРµ, РєРѕРіРґР° РїРѕРґРЅРёРјРµС‚СЃСЏ pod СЃ Р±Р°Р·РѕР№ postgress
 
 ```
 initContainers:
@@ -192,9 +192,9 @@ initContainers:
               until pg_isready -h $POSTGRES_HOST  -p  $POSTGRES_PORT; 
               do echo waiting for database; sleep 2; done;
 ```
-***Note:*** Непонятно откуда берется {{ postgresql.fullname ...}} 
+***Note:*** РќРµРїРѕРЅСЏС‚РЅРѕ РѕС‚РєСѓРґР° Р±РµСЂРµС‚СЃСЏ {{ postgresql.fullname ...}} 
 
-Добавить переменные окружения:
+Р”РѕР±Р°РІРёС‚СЊ РїРµСЂРµРјРµРЅРЅС‹Рµ РѕРєСЂСѓР¶РµРЅРёСЏ:
 ```
 env:
             - name: DB_URL
@@ -218,13 +218,13 @@ env:
               value: "postgresql:5432"
 ```
 
-### Проверить генерацию templates
+### РџСЂРѕРІРµСЂРёС‚СЊ РіРµРЅРµСЂР°С†РёСЋ templates
 `helm install hw02-library-app ./hw02-library-app --dry-run`  
-или  
+РёР»Рё  
 `.\hw02-Kubernetes\kubernetes\hw02-library-helm\helmInstallHw02LibraryApp-dry-run.bat`
 
-## Установить приложение  
-### Удаление предыдущей установки
+## РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РїСЂРёР»РѕР¶РµРЅРёРµ  
+### РЈРґР°Р»РµРЅРёРµ РїСЂРµРґС‹РґСѓС‰РµР№ СѓСЃС‚Р°РЅРѕРІРєРё
 
 Get all releases  
 `helm ls --all-namespaces`  OR   `helm ls -A`
@@ -234,45 +234,45 @@ Delete release
 helm uninstall release_name -n release_namespace
 helm uninstall hw02-library-app -n hw02
 ```
-### Новая установка
+### РќРѕРІР°СЏ СѓСЃС‚Р°РЅРѕРІРєР°
 
-***Note:*** namespace hw02 должен быть создан автоматически при установке приложения, но если что-то пойдет не так, то создать вручную  
+***Note:*** namespace hw02 РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СЃРѕР·РґР°РЅ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РїСЂРё СѓСЃС‚Р°РЅРѕРІРєРµ РїСЂРёР»РѕР¶РµРЅРёСЏ, РЅРѕ РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РїРѕР№РґРµС‚ РЅРµ С‚Р°Рє, С‚Рѕ СЃРѕР·РґР°С‚СЊ РІСЂСѓС‡РЅСѓСЋ  
 ```kubectl create namespace hw02```
 
-Из директории .\hw02-Kubernetes\kubernetes
-Команда установки приложения:  
+РР· РґРёСЂРµРєС‚РѕСЂРёРё .\hw02-Kubernetes\kubernetes
+РљРѕРјР°РЅРґР° СѓСЃС‚Р°РЅРѕРІРєРё РїСЂРёР»РѕР¶РµРЅРёСЏ:  
 ```
 helm install --replace --namespace=hw02 hw02-library-app ./hw02-library-app  
-или
+РёР»Рё
 .\helmInstallHw02LibraryApp.bat
 ```
 
-Если при повторной установке получаем ошибку:  
+Р•СЃР»Рё РїСЂРё РїРѕРІС‚РѕСЂРЅРѕР№ СѓСЃС‚Р°РЅРѕРІРєРµ РїРѕР»СѓС‡Р°РµРј РѕС€РёР±РєСѓ:  
 `Error: cannot re-use a name that is still in use`    
-то находим секрет  
+С‚Рѕ РЅР°С…РѕРґРёРј СЃРµРєСЂРµС‚  
 `kubectl get secret --all-namespaces -l "owner=helm"`  
-удаляем его  
+СѓРґР°Р»СЏРµРј РµРіРѕ  
 `kubectl delete secret sh.helm.release.v1.hw02-library-app.v1 -n hw02`  
-и запускаем установку снова  
-***Note:*** Рецепт найден тут: https://github.com/helm/helm/issues/4174  
+Рё Р·Р°РїСѓСЃРєР°РµРј СѓСЃС‚Р°РЅРѕРІРєСѓ СЃРЅРѕРІР°  
+***Note:*** Р РµС†РµРїС‚ РЅР°Р№РґРµРЅ С‚СѓС‚: https://github.com/helm/helm/issues/4174  
 
-Дождаться, когда pod hw02-library-app-<some hash> будет в состоянии READY  
-Проверяется командой:
+Р”РѕР¶РґР°С‚СЊСЃСЏ, РєРѕРіРґР° pod hw02-library-app-<some hash> Р±СѓРґРµС‚ РІ СЃРѕСЃС‚РѕСЏРЅРёРё READY  
+РџСЂРѕРІРµСЂСЏРµС‚СЃСЏ РєРѕРјР°РЅРґРѕР№:
 `kubectl get po -n hw02`
 
-## Проверка работоспособности приложения
+## РџСЂРѕРІРµСЂРєР° СЂР°Р±РѕС‚РѕСЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё РїСЂРёР»РѕР¶РµРЅРёСЏ
 
-### Под Win 
-В etc/host добавить строку  
+### РџРѕРґ Win 
+Р’ etc/host РґРѕР±Р°РІРёС‚СЊ СЃС‚СЂРѕРєСѓ  
 `127.0.0.1 arch.homework`
 
-Cделать forward на Ingress
-Найти ingress-nginx-controller pod'y командой:  
+CРґРµР»Р°С‚СЊ forward РЅР° Ingress
+РќР°Р№С‚Рё ingress-nginx-controller pod'y РєРѕРјР°РЅРґРѕР№:  
 `kubectl get pods -A --namespace hw02 | grep ingress`
-Вставить имя этой pod'ы в команду  
+Р’СЃС‚Р°РІРёС‚СЊ РёРјСЏ СЌС‚РѕР№ pod'С‹ РІ РєРѕРјР°РЅРґСѓ  
 ```
 kubectl port-forward -n kube-system pod/<ingress nginx pod> 80:80`
-пример: 
+РїСЂРёРјРµСЂ: 
 kubectl port-forward -n kube-system pod/ingress-nginx-controller-558664778f-sdzs7 80:80
 ```
 
@@ -282,29 +282,29 @@ http://arch.homework/
 http://arch.homework/health
 http://arch.homework/vlyulin/health
 ```
-### Логины
+### Р›РѕРіРёРЅС‹
 
 user: Admin pswd: 12345678  
 user: User01 pswd: 12345678  
 user: User02 pswd: 12345678  
 
 ---
-## Записки по debug pods
+## Р—Р°РїРёСЃРєРё РїРѕ debug pods
 
-Находим pod с приложением  
+РќР°С…РѕРґРёРј pod СЃ РїСЂРёР»РѕР¶РµРЅРёРµРј  
 `kubectl get pods --namespace hw02`
-Делаем на него форвард  
+Р”РµР»Р°РµРј РЅР° РЅРµРіРѕ С„РѕСЂРІР°СЂРґ  
 `kubectl port-forward -n hw02 pod/<pod> 80:8080`
 kubectl port-forward -n hw02 pod/hw02-library-app-598d987447-dpdqc 80:8080
 
 kubectl port-forward -n hw02 service/hw02-library-app-postgresql 5432:5432
 
-Посмотреть логи  
+РџРѕСЃРјРѕС‚СЂРµС‚СЊ Р»РѕРіРё  
 kubectl -n hw02 logs pod/hw02-library-app-79cd7b96b8-cjxmn
 
 kubectl describe pod
 
-Посмотреть, что там внутри:  
+РџРѕСЃРјРѕС‚СЂРµС‚СЊ, С‡С‚Рѕ С‚Р°Рј РІРЅСѓС‚СЂРё:  
 ```
 kubectl exec <POD-NAME> -c <CONTAINER-NAME> -- <COMMAND>
 kubectl exec --namespace="hw02" hw02-library-app-79cd7b96b8-gccnr -- ls /
@@ -312,7 +312,7 @@ docker exec -it hw02-library-app-79cd7b96b8-gccnr /bin/bash
 kubectl exec --stdin --tty hw02-library-app-79cd7b96b8-gccnr -n hw02 -- /bin/bash
 ```
 
-## Удаление релиза
+## РЈРґР°Р»РµРЅРёРµ СЂРµР»РёР·Р°
 #### Get all releases
 ```
 helm ls --all-namespaces  
@@ -333,24 +333,24 @@ Examples:
 
 
 ---
-## Полезные ссылки
+## РџРѕР»РµР·РЅС‹Рµ СЃСЃС‹Р»РєРё
 Subcharts
 https://helm.sh/docs/chart_template_guide/subcharts_and_globals/
 
-Синтаксис
+РЎРёРЅС‚Р°РєСЃРёСЃ
 https://helm.sh/docs/chart_template_guide/yaml_techniques/
 
 
-Одинокая установка Postgres:
-Перейти в диреторию .\kubernetes  
+РћРґРёРЅРѕРєР°СЏ СѓСЃС‚Р°РЅРѕРІРєР° Postgres:
+РџРµСЂРµР№С‚Рё РІ РґРёСЂРµС‚РѕСЂРёСЋ .\kubernetes  
 Charts: https://github.com/bitnami/charts/tree/master/bitnami/postgresql  
-Установка postgres:  
+РЈСЃС‚Р°РЅРѕРІРєР° postgres:  
 ```
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install hw02-postgres -f values.yaml bitnami/postgresql --namespace hw02  
 ```
-или 
+РёР»Рё 
 `HelmInstallPostgres.bat` 
 
-а можно как-то так:
+Р° РјРѕР¶РЅРѕ РєР°Рє-С‚Рѕ С‚Р°Рє:
 helm install hw02-postgres bitnami/postgresql --namespace hw02
