@@ -1,4 +1,8 @@
 rootProject.name = 'SoftwareArchitect'
 include 'hw01-Kubernetes'
 include 'hw02-Kubernetes'
+include 'hw03-Prometheus'
+include 'hw05-Apigateway'
+include 'hw05-Apigateway:App'
+include 'hw05-Apigateway:Auth'
 

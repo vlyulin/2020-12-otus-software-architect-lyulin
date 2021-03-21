@@ -1,0 +1,4 @@
+postgresqlDatabase: "postgresdb"
+postgresqlUsername: "postgresadmin"
+postgresqlPassword: "pswd"
+service.port: 5432

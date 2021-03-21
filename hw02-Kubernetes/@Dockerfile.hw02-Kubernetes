@@ -1,0 +1,9 @@
+From tomcat:8.0.51-jre8-alpine
+COPY ./hw02-Kubernetes/build/libs/hw02-Kubernetes*.war /usr/local/tomcat/webapps/
+# expose admin page
+USER root
+COPY ./hw02-Kubernetes/tomcat/tomcat-users.xml /usr/local/tomcat/conf/
+COPY ./hw02-Kubernetes/tomcat/context.xml /usr/local/tomcat/webapps/manager/META-INF/
+EXPOSE 8080
+CMD ["catalina.sh","run"]
+

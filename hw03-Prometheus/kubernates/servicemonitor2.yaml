@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prom
+    # hw03-library-app
+  labels:
+    release: prom
+    # prometheus-stack
+    helm.sh/chart: hw03-library-app-0.1.0
+    app.kubernetes.io/name: hw03-library-app
+    app.kubernetes.io/instance: hw03-library-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  jobLabel: hw03-library-app
+  namespaceSelector:
+    matchNames:
+    - "hw03"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hw03-library-app
+      app.kubernetes.io/instance: hw03-library-app
+  endpoints:
+  - interval: 5s
+    port: http
+    path: hw03-Prometheus-3.0.0/prometheus

@@ -175,8 +175,8 @@ INSERT INTO acl_sid (principal, sid) VALUES
 
 -- Классы
 INSERT INTO acl_class (class) VALUES
-('ru.otus.spring.library.docker.models.Book'),
-('ru.otus.spring.library.docker.models.Comment');
+('Book'),
+('Comment');
 
 -- Книги
 -- Владелец у всех Администратор (acl.id = 1)

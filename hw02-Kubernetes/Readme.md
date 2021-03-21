@@ -142,11 +142,11 @@ postgresql:
   service:
     port: "5432"
 ```
-***Note:*** Возможно, было бы правильнее из совместить.
+***Note:*** Возможно, было бы правильнее их совместить.
 
 ### ..\2020-12-otus-software-architect-lyulin\hw02-Kubernetes\kubernetes\hw02-library-app\config.yaml 
 
-Создать файл и Добавить секреты:
+Создать файл config.yaml и добавить секреты:
 ```
 apiVersion: v1
 kind: Secret
@@ -271,10 +271,10 @@ Cделать forward на Ingress
 `kubectl get pods -A --namespace hw02 | grep ingress`
 Вставить имя этой pod'ы в команду  
 ```
-kubectl port-forward -n kube-system pod/<ingress nginx pod> 80:80`
+kubectl port-forward -n kube-system pod/ingress nginx pod 80:80
+```
 пример: 
 kubectl port-forward -n kube-system pod/ingress-nginx-controller-558664778f-sdzs7 80:80
-```
 
 ## URLs:
 ```

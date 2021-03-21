@@ -1,0 +1,726 @@
+{
+	"info": {
+		"_postman_id": "ea57edf6-584d-402f-8be5-56dfe3954ae5",
+		"name": "hw05-Apigateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Регистрация пользователя 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  // pm.expect(jsonData).to.include(\"status\");\r",
+							"  pm.expect(jsonData.status).to.eql(\"ok\");\r",
+							"  pm.collectionVariables.set(\"user1Id\", jsonData.userId)\r",
+							"  var u1Id = pm.collectionVariables.get(\"user1Id\");\r",
+							"  console.log(\"userId = \" + u1Id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let user1login = pm.variables.replaceIn('User{{$randomInt}}')\r",
+							"let user1pswd = pm.variables.replaceIn('{{$randomPassword}}')\r",
+							"let user1firstname = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"let user1lastname = pm.variables.replaceIn('{{$randomLastName}}')\r",
+							"let user1email = pm.variables.replaceIn('{{$randomEmail}}')\r",
+							"let user1newName = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"\r",
+							"pm.collectionVariables.set(\"user1login\", user1login);\r",
+							"console.log(pm.collectionVariables.get(\"user1login\"));\r",
+							"pm.collectionVariables.set(\"user1pswd\", user1pswd);\r",
+							"pm.collectionVariables.set(\"user1firstname\", user1firstname);\r",
+							"pm.collectionVariables.set(\"user1lastname\", user1lastname);\r",
+							"pm.collectionVariables.set(\"user1email\", user1email);\r",
+							"pm.collectionVariables.set(\"user1newName\", user1newName);\r",
+							"pm.collectionVariables.set(\"sess_id\", \"\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user1pswd}}",
+							"type": "text"
+						},
+						{
+							"key": "firstname",
+							"value": "{{user1firstname}}",
+							"type": "text"
+						},
+						{
+							"key": "lastname",
+							"value": "{{user1lastname}}",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "{{user1email}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://{{baseAuthURL}}/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Проверка, что получение профиля пользователя1 недоступно без логина",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 401\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([401,200]);\r",
+							"    \r",
+							"//   pm.response.to.have.status(401);\r",
+							"    if (pm.response.code == 200) {\r",
+							"        var jsonData = JSON.parse(responseBody);\r",
+							"        pm.expect(jsonData.status).to.eql(\"error\");\r",
+							"        pm.expect(jsonData.message).to.eql(\"Please go to login and provide Login/Password\");\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://{{baseAppURL}}/user/{{user1Id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Проверка, что изменение профиля пользователя1 недоступно без логина",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(jsonData.status).to.eql(\"error\");\r",
+							"  pm.expect(jsonData.message).to.eql(\"Please go to login and provide Login/Password\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user1pswd}}",
+							"type": "text"
+						},
+						{
+							"key": "firstname",
+							"value": "{{user1firstname}}",
+							"type": "text"
+						},
+						{
+							"key": "lastname",
+							"value": "{{user1lastname}}",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "{{user1email}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://{{baseAppURL}}/user/{{user1Id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Вход пользователя 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(jsonData.status).to.eql(\"ok\");\r",
+							"\r",
+							"  pm.expect(pm.response.headers.get('X-UserId')).to.eql(pm.collectionVariables.get(\"user1Id\"));\r",
+							"  pm.expect(pm.response.headers.get('X-User')).to.eql(pm.collectionVariables.get(\"user1login\"));\r",
+							"  pm.expect(pm.response.headers.get('X-First-Name')).to.eql(pm.collectionVariables.get(\"user1firstname\"));\r",
+							"  pm.expect(pm.response.headers.get('X-Last-Name')).to.eql(pm.collectionVariables.get(\"user1lastname\"));\r",
+							"  pm.expect(pm.response.headers.get('X-Email')).to.eql(pm.collectionVariables.get(\"user1email\"));\r",
+							"\r",
+							"  // pm.environment.set('session_id', pm.cookies.get('session_id'));\r",
+							"  pm.collectionVariables.set('sess_id', pm.cookies.get('session_id'));\r",
+							"  console.log(\"session_id = \" + pm.collectionVariables.get(\"sess_id\"));\r",
+							"  console.log(\"logged\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user1pswd}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://{{baseAuthURL}}/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Изменение профиля пользователя 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  // pm.expect(jsonData).to.include(\"status\");\r",
+							"  pm.expect(jsonData.id).to.equal(Number(pm.collectionVariables.get(\"user1Id\")));\r",
+							"  pm.expect(jsonData.firstname).to.eql(pm.collectionVariables.get(\"user1newName\"));\r",
+							"\r",
+							"//   pm.collectionVariables.set(\"user1Id\", jsonData.userId)\r",
+							"//   var u1Id = pm.collectionVariables.get(\"user1Id\");\r",
+							"//   console.log(\"status: \" + jsonData.status);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "session_id={{sess_id}}",
+						"type": "text"
+					},
+					{
+						"key": "x-userid",
+						"value": "{{user1Id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user1pswd}}",
+							"type": "text"
+						},
+						{
+							"key": "firstname",
+							"value": "{{user1newName}}",
+							"type": "text"
+						},
+						{
+							"key": "lastname",
+							"value": "{{user1lastname}}",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "{{user1email}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://{{baseAppURL}}/user/{{user1Id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Проверка, что профиль поменялся",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(jsonData.firstname).to.eql(\r",
+							"      pm.collectionVariables.get(\"user1newName\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "session_id={{sess_id}}",
+						"type": "text"
+					},
+					{
+						"key": "x-userid",
+						"value": "{{user1Id}}",
+						"type": "text"
+					}
+				],
+				"url": "http://{{baseAppURL}}/user/{{user1Id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Выход",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(jsonData.status).to.eql(\"ok\");\r",
+							"  console.log(\"status: \" + jsonData.status);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://{{baseAuthURL}}/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "Регистрация пользователя 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  // pm.expect(jsonData).to.include(\"status\");\r",
+							"  pm.expect(jsonData.status).to.eql(\"ok\");\r",
+							"  pm.collectionVariables.set(\"user2Id\", jsonData.userId)\r",
+							"  var u2Id = pm.collectionVariables.get(\"user2Id\");\r",
+							"  console.log(\"user2Id = \" + u2Id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let user2login = pm.variables.replaceIn('User{{$randomInt}}')\r",
+							"let user2pswd = pm.variables.replaceIn('{{$randomPassword}}')\r",
+							"let user2firstname = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"let user2lastname = pm.variables.replaceIn('{{$randomLastName}}')\r",
+							"let user2email = pm.variables.replaceIn('{{$randomEmail}}')\r",
+							"\r",
+							"pm.collectionVariables.set(\"user2login\", user2login);\r",
+							"console.log(pm.collectionVariables.get(\"user2login\"));\r",
+							"pm.collectionVariables.set(\"user2pswd\", user2pswd);\r",
+							"pm.collectionVariables.set(\"user2firstname\", user2firstname);\r",
+							"pm.collectionVariables.set(\"user2lastname\", user2lastname);\r",
+							"pm.collectionVariables.set(\"user2email\", user2email);\r",
+							"pm.collectionVariables.set(\"sess_id\", \"\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user2login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user2pswd}}",
+							"type": "text"
+						},
+						{
+							"key": "firstname",
+							"value": "{{user2firstname}}",
+							"type": "text"
+						},
+						{
+							"key": "lastname",
+							"value": "{{user2lastname}}",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "{{user2email}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://{{baseAuthURL}}/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Вход пользователя 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(jsonData.status).to.eql(\"ok\");\r",
+							"\r",
+							"  pm.expect(pm.response.headers.get('X-UserId')).to.eql(pm.collectionVariables.get(\"user2Id\"));\r",
+							"  pm.expect(pm.response.headers.get('X-User')).to.eql(pm.collectionVariables.get(\"user2login\"));\r",
+							"  pm.expect(pm.response.headers.get('X-First-Name')).to.eql(pm.collectionVariables.get(\"user2firstname\"));\r",
+							"  pm.expect(pm.response.headers.get('X-Last-Name')).to.eql(pm.collectionVariables.get(\"user2lastname\"));\r",
+							"  pm.expect(pm.response.headers.get('X-Email')).to.eql(pm.collectionVariables.get(\"user2email\"));  \r",
+							"  pm.collectionVariables.set('sess_id', pm.cookies.get('session_id'));\r",
+							"  console.log(\"session_id = \" + pm.collectionVariables.get(\"sess_id\"));\r",
+							"  console.log(\"logged\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user2login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user2pswd}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://{{baseAuthURL}}/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Проверка, что пользователь2 не имеет доступа на чтение профиля пользователя1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", () => {\r",
+							"  pm.response.to.have.status(401);\r",
+							"//   var jsonData = JSON.parse(responseBody);\r",
+							"//   pm.expect(jsonData.status).to.eql(\"error\");\r",
+							"//   pm.expect(jsonData.message).to.eql(\"Please go to login and provide Login/Password\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "session_id={{sess_id}}",
+						"type": "text"
+					},
+					{
+						"key": "x-userid",
+						"value": "{{user2Id}}",
+						"type": "text"
+					}
+				],
+				"url": "{{baseAppURL}}/user/{{user1Id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Проверка, что пользователь2 не имеет доступа на редактирование профиля пользователя1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", () => {\r",
+							"  pm.response.to.have.status(401);\r",
+							"//   var jsonData = JSON.parse(responseBody);\r",
+							"//   pm.expect(jsonData.status).to.eql(\"error\");\r",
+							"//   pm.expect(jsonData.message).to.eql(\"Please go to login and provide Login/Password\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "session_id={{sess_id}}",
+						"type": "text"
+					},
+					{
+						"key": "x-userid",
+						"value": "{{user2Id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user1pswd}}",
+							"type": "text"
+						},
+						{
+							"key": "firstname",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "lastname",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "{{user1login}}@mail.ru",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://{{baseAppURL}}/user/{{user1Id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Очистка переменных + список сессий",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"user1login\", \"\");\r",
+							"pm.collectionVariables.set(\"user1pswd\", \"\");\r",
+							"pm.collectionVariables.set(\"user1firstname\", \"\");\r",
+							"pm.collectionVariables.set(\"user1lastname\", \"\");\r",
+							"pm.collectionVariables.set(\"user1email\", \"\");\r",
+							"pm.collectionVariables.set(\"user1newName\", \"\");\r",
+							"pm.collectionVariables.set(\"sess_id\", \"\");\r",
+							"\r",
+							"pm.collectionVariables.set(\"user2login\", \"\");\r",
+							"pm.collectionVariables.set(\"user2pswd\", \"\");\r",
+							"pm.collectionVariables.set(\"user2firstname\", \"\");\r",
+							"pm.collectionVariables.set(\"user2lastname\", \"\");\r",
+							"pm.collectionVariables.set(\"user2email\", \"\");\r",
+							"pm.collectionVariables.set(\"sess_id\", \"\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "session_id={{sess_id}}",
+						"type": "text"
+					}
+				],
+				"url": "http://{{baseAuthURL}}/sessions"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseAuthURL",
+			"value": "arch.homework/auth"
+		},
+		{
+			"key": "baseAppURL",
+			"value": "arch.homework"
+		},
+		{
+			"key": "user1Id",
+			"value": ""
+		},
+		{
+			"key": "user1login",
+			"value": ""
+		},
+		{
+			"key": "user1pswd",
+			"value": ""
+		},
+		{
+			"key": "user1firstname",
+			"value": ""
+		},
+		{
+			"key": "user1lastname",
+			"value": ""
+		},
+		{
+			"key": "user1email",
+			"value": ""
+		},
+		{
+			"key": "user2Id",
+			"value": ""
+		},
+		{
+			"key": "user2login",
+			"value": ""
+		},
+		{
+			"key": "user2pswd",
+			"value": ""
+		},
+		{
+			"key": "user2firstname",
+			"value": ""
+		},
+		{
+			"key": "user2lastname",
+			"value": ""
+		},
+		{
+			"key": "user2email",
+			"value": ""
+		},
+		{
+			"key": "user1newName",
+			"value": ""
+		},
+		{
+			"key": "sess_id",
+			"value": ""
+		}
+	]
+}

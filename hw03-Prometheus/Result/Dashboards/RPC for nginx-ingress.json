@@ -1,0 +1,96 @@
+{
+  "aliasColors": {},
+  "dashLength": 10,
+  "fieldConfig": {
+    "defaults": {
+      "custom": {}
+    },
+    "overrides": []
+  },
+  "fill": 1,
+  "gridPos": {
+    "h": 13,
+    "w": 22,
+    "x": 0,
+    "y": 0
+  },
+  "id": 2,
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": true,
+    "total": false,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "dataLinks": []
+  },
+  "pointradius": 2,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "expr": "rate(nginx_ingress_controller_request_duration_seconds_count{host=\"arch.homework\"}[1m])",
+      "interval": "",
+      "legendFormat": "",
+      "refId": "A"
+    }
+  ],
+  "thresholds": [],
+  "timeRegions": [],
+  "title": "RPC gor nginx-ingress",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "$$hashKey": "object:175",
+      "format": "short",
+      "label": "RPC",
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "$$hashKey": "object:176",
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null,
+  "datasource": null
+}

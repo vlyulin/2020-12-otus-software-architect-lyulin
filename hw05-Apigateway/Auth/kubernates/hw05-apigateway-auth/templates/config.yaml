@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-database-uri
+type: Opaque
+data:
+  DATABASE_URI: {{ printf "jdbc:postgresql://%s:%s/%s" .Values.externalPostgresql.postgresqlHost .Values.externalPostgresql.postgresqlPort .Values.externalPostgresql.postgresqlDatabase  | b64enc | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-db-username
+type: Opaque
+data: 
+  db_username: {{ .Values.externalPostgresql.postgresqlUsername | b64enc | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-db-password
+type: Opaque
+data: 
+  db_password: {{ .Values.externalPostgresql.postgresqlPassword | b64enc | quote }}  

@@ -1,0 +1,158 @@
+{
+  "alert": {
+    "alertRuleTags": {},
+    "conditions": [
+      {
+        "evaluator": {
+          "params": [
+            2000
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "and"
+        },
+        "query": {
+          "params": [
+            "A",
+            "5m",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "avg"
+        },
+        "type": "query"
+      }
+    ],
+    "executionErrorState": "alerting",
+    "for": "5m",
+    "frequency": "1m",
+    "handler": 1,
+    "message": "¬се плохо",
+    "name": "Latency (response time) с квантил€ми по 0.5, 0.95, 0.99 alert",
+    "noDataState": "no_data",
+    "notifications": []
+  },
+  "aliasColors": {},
+  "dashLength": 10,
+  "fieldConfig": {
+    "defaults": {
+      "custom": {}
+    },
+    "overrides": []
+  },
+  "fill": 1,
+  "gridPos": {
+    "h": 9,
+    "w": 12,
+    "x": 0,
+    "y": 0
+  },
+  "id": 2,
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": true,
+    "total": false,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "dataLinks": []
+  },
+  "pointradius": 2,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "expr": "histogram_quantile(0.5, \nsum by (le, endpoint) (rate(nginx_ingress_controller_request_duration_seconds_bucket[1m]))) * 1000",
+      "interval": "",
+      "legendFormat": "0.5",
+      "refId": "A"
+    },
+    {
+      "expr": "histogram_quantile(0.95, \nsum by (le, endpoint) (rate(nginx_ingress_controller_request_duration_seconds_bucket[1m]))) * 1000",
+      "interval": "",
+      "legendFormat": "0.95",
+      "refId": "B"
+    },
+    {
+      "expr": "histogram_quantile(0.99, \nsum by (le, endpoint) (rate(nginx_ingress_controller_request_duration_seconds_bucket[1m]))) * 1000",
+      "interval": "",
+      "legendFormat": "0.99",
+      "refId": "C"
+    },
+    {
+      "expr": "histogram_quantile(0.99999, \nsum by (le, endpoint) (rate(nginx_ingress_controller_request_duration_seconds_bucket[1m]))) * 1000",
+      "interval": "",
+      "legendFormat": "0.99999",
+      "refId": "D"
+    }
+  ],
+  "thresholds": [
+    {
+      "value": 2000,
+      "op": "gt",
+      "fill": true,
+      "line": true,
+      "colorMode": "critical"
+    }
+  ],
+  "timeRegions": [],
+  "title": "Latency (response time) с квантил€ми по 0.5, 0.95, 0.99",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "$$hashKey": "object:40",
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "$$hashKey": "object:41",
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null,
+  "datasource": null
+}

@@ -1,0 +1,46 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management'
+    id 'java'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+group 'ru.otus'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+// Про dependencies
+// https://stackoverflow.com/questions/44493378/whats-the-difference-between-implementation-and-compile-in-gradle
+dependencies {
+//    implementation project(':hw05-Apigateway:App')
+//    compile project(':hw05-Apigateway:App')
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.4.2', ext: 'pom'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+//  providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+//  Postgress
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+//  JPA
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.2'
+//  REST
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-rest', version: '2.4.2'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+// https://mvnrepository.com/artifact/com.h2database/h2
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.3.148'
+}
+
+test {
+    useJUnitPlatform()
+}
