@@ -11,10 +11,10 @@
 
 ## RESTful
 
-[Authentification Service описание REST интерфейсов]()  
-[Billing Service описание REST интерфейсов]()  
-[Order Service описание REST интерфейсов]()  
-[Notification Service описание REST интерфейсов]()  
+[Authentification Service описание REST интерфейсов](https://app.swaggerhub.com/apis-docs/vlyulin4/registration-authentification_service_api/1.0)  
+[Billing Service описание REST интерфейсов](https://app.swaggerhub.com/apis-docs/vlyulin4/billing-service_api/1.0)  
+[Order Service описание REST интерфейсов](https://app.swaggerhub.com/apis-docs/vlyulin4/order-service_api/1.0)  
+[Notification Service описание REST интерфейсов](https://app.swaggerhub.com/apis-docs/vlyulin4/notification-service_api/1.0)  
 
 Модель взаимодействия синхронная, что упрощает её понимание.
 Оркестратора сервисов как такового нет, поэтому схема обладает довольно высокой связанностью по управлению (control coupling).
@@ -27,7 +27,7 @@
 Заинтересованный сервис, подписанные на такие извещения, при получении сообщения обращается к сервису источнику сообщения для получения нового состояния.
 Обращение за новым состоянием выполняется по синхронному протоколу REST.
 
-![event-notification-sequence](EventNotifications\event-notification-sequence.png)
+![event-notification-sequence](EventNotifications/event-notification-sequence.png)
 
 ## Event collaboration
 
@@ -36,3 +36,4 @@
 "Потребляется" только необходимая информация из полученного сообщения.
 Таким образом, дополнительных обращений в другие сервисы не выполняется, что уменьшает нагрузку на чтение для других сервисов.
 
+![event-collaboration-sequence](EventCollaboration\event-collaboration-sequence.png)
