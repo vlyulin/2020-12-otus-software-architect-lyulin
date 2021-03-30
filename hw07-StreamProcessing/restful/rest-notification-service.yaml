@@ -1,0 +1,47 @@
+openapi: "3.0.2"
+info:
+  title: "Notification Service API"
+  description: ""
+  version: "1.0"
+servers:
+  - url: http://arch.homework/nsservice/v1/
+    description: Notification service URL
+paths:
+  /send_email:
+    post:
+      summary: Send e-mail
+      requestBody:
+        description: All necessary information
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Notification'
+      responses:
+        '202': 
+          description: Accepted
+        '422':
+          description: Unprocessable Entity
+  
+security:
+  - cookieAuth: []
+          
+components:
+  securitySchemes:
+    cookieAuth:         # arbitrary name for the security scheme; will be used in the "security" key later
+      type: apiKey
+      in: cookie
+      name: session_id  # cookie name
+  schemas:
+    Notification:
+      type: object
+      properties: 
+        template_id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        context:
+          additionalProperties:
+            type: string
+          
