@@ -36,4 +36,4 @@
 "Потребляется" только необходимая информация из полученного сообщения.
 Таким образом, дополнительных обращений в другие сервисы не выполняется, что уменьшает нагрузку на чтение для других сервисов.
 
-![event-collaboration-sequence](EventCollaboration\event-collaboration-sequence.png)
+![event-collaboration-sequence](EventCollaboration/event-collaboration-sequence.png)
