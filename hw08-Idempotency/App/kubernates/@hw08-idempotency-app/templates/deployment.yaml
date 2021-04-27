@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hw08-idempotency-app.fullname" . }}
+  labels:
+    {{- include "hw08-idempotency-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "hw08-idempotency-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "hw08-idempotency-app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "hw08-idempotency-app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      # My start
+      initContainers:
+        - name: check-db-ready
+          image: postgres:latest
+          env:
+            - name: POSTGRES_HOST
+              value: {{ .Values.externalPostgresql.fullname | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.externalPostgresql.postgresqlPort | quote }}
+          command:
+            - sh
+            - "-c"
+            - |
+              until pg_isready -h $POSTGRES_HOST  -p  $POSTGRES_PORT; 
+              do echo waiting for database; sleep 2; done;
+      # My end
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.externalPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/liveness
+              port: http         
+            initialDelaySeconds: 90
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/readiness
+              port: http
+            failureThreshold: 3
+            periodSeconds: 15
+          env:
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-uri
+                  key: DATABASE_URI
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-username
+                  key: db_username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password
+                  key: db_password
+            - name: DB_DRIVER
+              value: {{ .Values.externalPostgresql.postgresqlDriver }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

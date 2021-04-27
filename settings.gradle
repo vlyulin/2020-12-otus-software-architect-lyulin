@@ -5,4 +5,5 @@ include 'hw03-Prometheus'
 include 'hw05-Apigateway'
 include 'hw05-Apigateway:App'
 include 'hw05-Apigateway:Auth'
-
+include 'hw08-Idempotency:App'
+include 'hw08-Idempotency:Auth'

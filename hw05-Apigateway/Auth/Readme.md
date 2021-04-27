@@ -13,7 +13,7 @@ gradle :hw05-Apigateway:Auth:build
 
 Проверить запуск приложения
 ```
-java -jar hw05-Apigateway/App/build/libs/App.jar
+java -jar hw08-Idempotency/Auth/build/libs/Auth-1.0.0.jar
 ```
 
 ## Собрать docker-файла с приложением
