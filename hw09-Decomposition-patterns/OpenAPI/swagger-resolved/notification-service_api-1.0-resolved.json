@@ -1,0 +1,73 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Notification Service API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://arch.homework/nsservice/v1/",
+      "description": "Notification service URL"
+    }
+  ],
+  "security": [
+    {
+      "cookieAuth": []
+    }
+  ],
+  "paths": {
+    "/send_email": {
+      "post": {
+        "summary": "Send e-mail",
+        "requestBody": {
+          "description": "All necessary information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "template_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "email": {
+            "type": "string"
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "name": "session_id",
+        "in": "cookie"
+      }
+    }
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "title" : "Registration/Authentification Service API",
+    "description" : "",
+    "version" : "1.0"
+  },
+  "servers" : [ {
+    "url" : "http://arch.homework/auth/v1/",
+    "description" : "Registration/Authentification Service URL"
+  } ],
+  "paths" : {
+    "/register" : {
+      "post" : {
+        "summary" : "Register an User",
+        "requestBody" : {
+          "description" : "New User",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful order creation",
+            "headers" : {
+              "Location" : {
+                "schema" : {
+                  "type" : "string",
+                  "example" : "orders/:order_id"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Unprocessable Entity"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/login" : {
+      "post" : {
+        "summary" : "User login",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "login" : {
+                    "type" : "string"
+                  },
+                  "password" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successfully authenticated. The session ID is returned in a cookie named `session_id`. You need to include this cookie in subsequent requests.\n",
+            "headers" : {
+              "X-UserId" : {
+                "schema" : {
+                  "type" : "integer"
+                },
+                "description" : "User id"
+              },
+              "X-User" : {
+                "schema" : {
+                  "type" : "string"
+                },
+                "description" : "User login"
+              },
+              "X-First-Name" : {
+                "schema" : {
+                  "type" : "string"
+                },
+                "description" : "User first name"
+              },
+              "X-Last-Name" : {
+                "schema" : {
+                  "type" : "string"
+                },
+                "description" : "User last name"
+              },
+              "X-Email" : {
+                "schema" : {
+                  "type" : "string"
+                },
+                "description" : "User e-mail"
+              },
+              "Set-Cookie" : {
+                "schema" : {
+                  "type" : "string",
+                  "example" : "session_id=some uuid; Path=/; HttpOnly"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authorization information is missing or invalid."
+          }
+        }
+      }
+    },
+    "/auth" : {
+      "get" : {
+        "summary" : "Check authorisation",
+        "parameters" : [ {
+          "in" : "cookie",
+          "name" : "session_id",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/OkRespHeaders"
+          },
+          "401" : {
+            "description" : "Authorization information is missing or invalid."
+          }
+        }
+      }
+    },
+    "/logout" : {
+      "get" : {
+        "summary" : "User logout",
+        "parameters" : [ {
+          "in" : "cookie",
+          "name" : "session_id",
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/signin" : {
+      "get" : {
+        "summary" : "Error page",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "text/plain" : {
+                "schema" : {
+                  "type" : "string",
+                  "example" : "Please go to login and provide Login/Password"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "OkRespHeaders" : {
+        "description" : "OK response headers",
+        "headers" : {
+          "X-UserId" : {
+            "schema" : {
+              "type" : "integer"
+            },
+            "description" : "User id"
+          },
+          "X-User" : {
+            "schema" : {
+              "type" : "string"
+            },
+            "description" : "User login"
+          },
+          "X-First-Name" : {
+            "schema" : {
+              "type" : "string"
+            },
+            "description" : "User first name"
+          },
+          "X-Last-Name" : {
+            "schema" : {
+              "type" : "string"
+            },
+            "description" : "User last name"
+          },
+          "X-Email" : {
+            "schema" : {
+              "type" : "string"
+            },
+            "description" : "User e-mail"
+          }
+        }
+      }
+    },
+    "schemas" : {
+      "User" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      }
+    }
+  }
+}
