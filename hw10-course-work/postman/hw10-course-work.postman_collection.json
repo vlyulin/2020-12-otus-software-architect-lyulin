@@ -1,0 +1,315 @@
+{
+	"info": {
+		"_postman_id": "1aa91240-1f86-4c94-9cd6-33b9f1be3002",
+		"name": "hw10-course-work",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Создание заказа",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid'); \r",
+							"pm.collectionVariables.set(\"idempotencyKeyGUID\", uuid.v4());\r",
+							"console.log(\"idempotencyKeyGUID = \" + pm.collectionVariables.get(\"idempotencyKeyGUID\"));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonOrder = pm.response.json();\r",
+							"console.info(\"jsonOrder = \" + jsonOrder.id);\r",
+							"pm.collectionVariables.set(\"order_id\", jsonOrder.id);\r",
+							"pm.collectionVariables.set(\"objectVersionNumber\", jsonOrder.objectVersionNumber);\r",
+							"pm.collectionVariables.set(\"order_items\", JSON.stringify(jsonOrder.items));\r",
+							"console.info(\"order_id = \" + pm.collectionVariables.get(\"order_id\") \r",
+							"+ \" objectVersionNumber = \" + pm.collectionVariables.get(\"objectVersionNumber\")\r",
+							"+ \" order_items = \" + pm.collectionVariables.get(\"order_items\")\r",
+							");\r",
+							"\r",
+							"pm.test(\"Status code is 201 and contains id\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"  pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-userid",
+						"value": "101",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": null,\r\n  \"idempotencyKey\": \"{{idempotencyKeyGUID}}\",\r\n  \"createdBy\": {{user_id}},\r\n  \"items\": [\r\n    {\r\n      \"id\": null,\r\n      \"quantity\": 1,\r\n      \"price\": 56.23\r\n    }\r\n  ],\r\n  \"shipDate\": \"2021-04-10\",\r\n  \"status\": \"PLACED\",\r\n  \"complete\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseOrderServiceURL}}/orders",
+					"protocol": "http",
+					"host": [
+						"{{baseOrderServiceURL}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Billing Orders",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 and contains order_id = \" + pm.collectionVariables.get(\"order_id\"), () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"//   console.info(\"pm.collectionVariables.order_id = \" + pm.collectionVariables.get(\"order_id\"))\r",
+							"  pm.expect(_isContains(jsonData, \"billingOrderId\", parseInt(pm.collectionVariables.get(\"order_id\")))).to.be.true;\r",
+							"});\r",
+							"\r",
+							"function _isContains(json, keyname, value) {\r",
+							" if(Array.isArray(json) == true) {\r",
+							"     console.info(\"Array json.length = \" + json.length);\r",
+							"    for (var i = 1; i<=json.length;i++) {\r",
+							"        console.info(\"i = \" + i);\r",
+							"        if (_isContains(json[i], keyname, value)) {\r",
+							"            console.info(\"return true\");\r",
+							"            return true;\r",
+							"        }\r",
+							"    }\r",
+							"    console.info(\"return false\");\r",
+							"    return false;\r",
+							" }\r",
+							"\r",
+							" console.info(\"json[keyname] = \" + json[keyname] + \" value = \" + value + \" return \" + (json[keyname] === value));\r",
+							" return json[keyname] === value;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-userid",
+						"value": "101",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseBillingServiceURL}}//accounts/billingOrders/{{user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{baseBillingServiceURL}}"
+					],
+					"path": [
+						"",
+						"accounts",
+						"billingOrders",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notification Orders",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 and contains order_id = \" + pm.collectionVariables.get(\"order_id\"), () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(_isContains(jsonData, \"id\", pm.collectionVariables.get(\"order_id\"))).to.be.true;\r",
+							"});\r",
+							"\r",
+							"function _isContains(json, keyname, value) {\r",
+							" if(Array.isArray(json) == true) {\r",
+							"     console.info(\"Array json.length = \" + json.length);\r",
+							"    for (var i = 1; i<=json.length;i++) {\r",
+							"        console.info(\"i = \" + i);\r",
+							"        if (_isContains(json[i], keyname, value)) {\r",
+							"            console.info(\"return true\");\r",
+							"            return true;\r",
+							"        }\r",
+							"    }\r",
+							"    console.info(\"return false\");\r",
+							"    return false;\r",
+							" }\r",
+							"\r",
+							" console.info(\"json[keyname] = \" + json[keyname] + \" value = \" + value + \" return \" + (json[keyname] === value));\r",
+							" return json[keyname] === value;\r",
+							"//  return Object.keys(json).some(key => {\r",
+							"//         console.info(\"key = \" + key + \" value = \" + value + \" json \" +  json[key] + \" result = \" + (key === keyname && json[key] === value));\r",
+							"//         // if(!json[key]) {console.info(\"!json[key] return false\"); return false; }\r",
+							"//         return typeof json[key] === 'object' ? \r",
+							"//         _isContains(json[key], keyname, value) : key === keyname && json[key] === value;\r",
+							"//     });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-userid",
+						"value": "101",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseNotificationServiceURL}}//accounts/notificationOrders/{{user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{baseNotificationServiceURL}}"
+					],
+					"path": [
+						"",
+						"accounts",
+						"notificationOrders",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseAuthURL",
+			"value": "localhost:8080/auth"
+		},
+		{
+			"key": "baseOrderServiceURL",
+			"value": "arch.homework/order-service"
+		},
+		{
+			"key": "transaction_id",
+			"value": "78"
+		},
+		{
+			"key": "idempotencyKeyGUID",
+			"value": ""
+		},
+		{
+			"key": "objectVersionNumber",
+			"value": ""
+		},
+		{
+			"key": "order_id",
+			"value": ""
+		},
+		{
+			"key": "order_items",
+			"value": ""
+		},
+		{
+			"key": "baseBillingServiceURL",
+			"value": "arch.homework/billing-service"
+		},
+		{
+			"key": "baseNotificationServiceURL",
+			"value": "arch.homework/notification-service"
+		},
+		{
+			"key": "user_id",
+			"value": "101"
+		}
+	]
+}

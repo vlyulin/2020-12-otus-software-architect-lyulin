@@ -1,0 +1,65 @@
+management:
+    endpoints:
+        web:
+            base-path: /
+            exposure:
+                include: "*"
+
+    endpoint:
+        health:
+            status:
+                order: DOWN, OUT_OF_SERVICE, UNKNOWN, OK, UP
+            probes:
+                enabled: true
+
+logging:
+        org.springframework.orm.jpa: DEBUG
+        org.springframework.transaction: DEBUG
+        ROOT: INFO
+#        org:
+#            hibernate:
+#                stat: INFO
+
+spring:
+    application:
+        name: order-service
+    main:
+        allow-bean-definition-overriding: true
+    datasource:
+        platform: postgres
+        driver-class-name: ${DB_DRIVER}
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+        schema:
+            classpath: schema.sql
+        data:
+            classpath: data.sql
+        initialization-mode: always
+        sql-script-encoding: UTF-8
+
+    jpa:
+        generate-ddl: false
+        show-sql: true
+        hibernate:
+            ddl-auto: none
+        properties:
+            hibernate:
+                format_sql: true
+                generate_statistics: false
+
+    messages:
+        basename: bundle
+        encoding: UTF-8
+
+    jmx:
+        enabled: true
+
+server:
+    contextPath: /order-server
+    servlet:
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true
+

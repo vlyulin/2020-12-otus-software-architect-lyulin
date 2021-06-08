@@ -27,7 +27,7 @@ public class CustomMethodSecurityExpressionRoot
         if( commentId == 0 || commentId == -1 ) return true;
 
         Optional<Comment> optComment = bookCommentsRepository.findById(commentId);
-        if( optComment.isEmpty() ) return false;
+        // if( optComment.isEmpty() ) return false;
 
         Comment comment = optComment.get();
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
