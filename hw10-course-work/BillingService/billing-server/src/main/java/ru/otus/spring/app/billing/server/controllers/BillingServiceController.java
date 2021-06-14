@@ -1,12 +1,12 @@
 package ru.otus.spring.app.billing.server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.cloud.sleuth.annotation.NewSpan;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.otus.spring.app.billing.client.dto.BillingOrderDTO;
 import ru.otus.spring.app.billing.server.models.BillingOrder;
-import ru.otus.spring.app.billing.server.repositories.BillingOrdersRepository;
 import ru.otus.spring.app.billing.server.services.BillingServerResource;
 import ru.otus.spring.app.billing.server.services.BillingService;
 import ru.otus.spring.app.twopc.common.models.TwoPCState;
@@ -27,6 +27,7 @@ public class BillingServiceController {
     @Autowired
     private TwoPCTransactionManagerService twoPCTransactionManagerService;
 
+//    @NewSpan
     @RequestMapping(value = "/canCommit/{transactionId}", method = {RequestMethod.POST})
     @ResponseBody
     TwoPCState canCommit(@PathVariable("transactionId") int transactionID,
@@ -49,6 +50,7 @@ public class BillingServiceController {
         }
     }
 
+//    @NewSpan
     @RequestMapping(value = "/preCommit/{transactionId}", method = {RequestMethod.PUT})
     @ResponseBody
     public TwoPCState preCommit(@PathVariable("transactionId") int transactionID) {
@@ -62,6 +64,7 @@ public class BillingServiceController {
         }
     }
 
+//    @NewSpan
     @RequestMapping(value = "/doCommit/{transactionId}", method = {RequestMethod.PUT})
     @ResponseBody
     public TwoPCState doCommit(@PathVariable("transactionId") int transactionID) {
@@ -75,6 +78,7 @@ public class BillingServiceController {
         }
     }
 
+//    @NewSpan
     @RequestMapping(value = "/abort/{transactionId}", method = {RequestMethod.PUT})
     @ResponseBody
     public TwoPCState abort(@PathVariable("transactionId") int transactionID) {
@@ -88,6 +92,7 @@ public class BillingServiceController {
         }
     }
 
+//    @NewSpan
     @RequestMapping(value = "/accounts/billingOrders/{account_id}", method = {RequestMethod.GET})
     @ResponseBody
     public List<BillingOrder> getBillingOrdersByAccountId(@PathVariable("account_id") int accountId) {

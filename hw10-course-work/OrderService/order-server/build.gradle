@@ -41,6 +41,12 @@ dependencies {
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     }
 
+// Вариант 1
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: '3.0.3'
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-sleuth-zipkin', version: '3.0.3'
+// Вариант 2
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin', version: '2.2.8.RELEASE'
+
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.5.0'
     implementation group: 'org.apiguardian', name: 'apiguardian-api', version: '1.1.0'
     implementation group: 'org.opentest4j', name: 'opentest4j', version: '1.2.0'

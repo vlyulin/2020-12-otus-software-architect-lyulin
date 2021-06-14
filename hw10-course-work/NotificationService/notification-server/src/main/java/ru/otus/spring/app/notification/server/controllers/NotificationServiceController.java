@@ -1,6 +1,7 @@
 package ru.otus.spring.app.notification.server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.cloud.sleuth.annotation.NewSpan;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,6 +28,7 @@ public class NotificationServiceController {
     @Autowired
     private TwoPCTransactionManagerService twoPCTransactionManagerService;
 
+//    @NewSpan
     @RequestMapping(value = "/canCommit/{transactionId}", method = {RequestMethod.POST})
     @ResponseBody
     TwoPCState canCommit(@PathVariable("transactionId") int transactionID,
@@ -49,6 +51,7 @@ public class NotificationServiceController {
         }
     }
 
+//    @NewSpan
     @RequestMapping(value = "/preCommit/{transactionId}", method = {RequestMethod.PUT})
     @ResponseBody
     public TwoPCState preCommit(@PathVariable("transactionId") int transactionID) {
@@ -62,6 +65,7 @@ public class NotificationServiceController {
         }
     }
 
+//    @NewSpan
     @RequestMapping(value = "/doCommit/{transactionId}", method = {RequestMethod.PUT})
     @ResponseBody
     public TwoPCState doCommit(@PathVariable("transactionId") int transactionID) {
@@ -75,6 +79,7 @@ public class NotificationServiceController {
         }
     }
 
+//    @NewSpan
     @RequestMapping(value = "/abort/{transactionId}", method = {RequestMethod.PUT})
     @ResponseBody
     public TwoPCState abort(@PathVariable("transactionId") int transactionID) {
@@ -88,6 +93,7 @@ public class NotificationServiceController {
         }
     }
 
+//    @NewSpan
     @RequestMapping(value = "/accounts/notificationOrders/{account_id}", method = {RequestMethod.GET})
     @ResponseBody
     public List<NotificationOrder> getNotificationOrdersByAccountId(@PathVariable("account_id") Long accountId) {

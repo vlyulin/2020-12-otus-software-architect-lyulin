@@ -16,4 +16,6 @@ include 'hw10-course-work:NotificationService:notification-client'
 include 'hw10-course-work:NotificationService:notification-server'
 include 'hw10-course-work:NotificationService:notification-client'
 findProject(':hw10-course-work:NotificationService:notification-client')?.name = 'notification-client'
+include 'hw10-course-work:Auth'
+findProject(':hw10-course-work:Auth')?.name = 'Auth'
 

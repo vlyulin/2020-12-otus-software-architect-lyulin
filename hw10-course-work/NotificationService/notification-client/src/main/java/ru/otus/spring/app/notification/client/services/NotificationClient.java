@@ -31,6 +31,7 @@ public class NotificationClient implements TwoPCResource {
 
         try {
             resourceState = notificationFeignClient.canCommit(transactionId, notificationOrderDTO);
+            log.info("Get resourceState = "+resourceState.toString());
         }
         catch (Exception e) {
             log.info("notificationFeignClient error: " + e.getMessage());

@@ -4,7 +4,6 @@ management:
             base-path: /
             exposure:
                 include: "*"
-
     endpoint:
         health:
             status:
@@ -13,16 +12,18 @@ management:
                 enabled: true
 
 logging:
-        org.springframework.orm.jpa: DEBUG
-        org.springframework.transaction: DEBUG
+    level:
         ROOT: INFO
-#        org:
-#            hibernate:
-#                stat: INFO
+        org:
+            hibernate:
+                stat: INFO
 
 spring:
     application:
         name: order-service
+    data:
+        rest:
+            basePath: /datarest
     main:
         allow-bean-definition-overriding: true
     datasource:
@@ -31,14 +32,10 @@ spring:
         url: ${DB_URL}
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
-        schema:
-            classpath: schema.sql
-        data:
-            classpath: data.sql
-        initialization-mode: always
         sql-script-encoding: UTF-8
 
     jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
         generate-ddl: false
         show-sql: true
         hibernate:
@@ -56,10 +53,12 @@ spring:
         enabled: true
 
 server:
-    contextPath: /order-server
     servlet:
         encoding:
             charset: UTF-8
             enabled: true
             force: true
+
+billing-service-url: billing-service
+notification-service-url: notification-service
 

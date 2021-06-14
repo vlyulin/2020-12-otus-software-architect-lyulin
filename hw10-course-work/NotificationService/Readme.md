@@ -5,9 +5,11 @@
 Из директории проекта 2020-12-otus-software-architect-lyulin выполнить команду: 
 
 ```
+gradlew :hw10-course-work:NotificationService:notification-client:build -x test
 gradlew :hw10-course-work:NotificationService:notification-server:build -x test
 или
-gradle hw10-course-work:NotificationService:notification-server:build -x test
+gradle :hw10-course-work:NotificationService:notification-client:build -x test
+gradle :hw10-course-work:NotificationService:notification-server:build -x test
 ```
 
 ## Собрать docker-файла с приложением

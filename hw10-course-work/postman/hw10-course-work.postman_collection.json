@@ -1,10 +1,163 @@
 {
 	"info": {
-		"_postman_id": "1aa91240-1f86-4c94-9cd6-33b9f1be3002",
+		"_postman_id": "b0f55faf-7108-4877-acac-3b0e74d9d5c2",
 		"name": "hw10-course-work",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Регистрация пользователя 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  // pm.expect(jsonData).to.include(\"status\");\r",
+							"  pm.expect(jsonData.status).to.eql(\"ok\");\r",
+							"  pm.collectionVariables.set(\"user1Id\", jsonData.userId)\r",
+							"  var u1Id = pm.collectionVariables.get(\"user1Id\");\r",
+							"  console.log(\"userId = \" + u1Id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let user1login = pm.variables.replaceIn('User{{$randomInt}}')\r",
+							"let user1pswd = pm.variables.replaceIn('{{$randomPassword}}')\r",
+							"let user1firstname = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"let user1lastname = pm.variables.replaceIn('{{$randomLastName}}')\r",
+							"let user1email = pm.variables.replaceIn('{{$randomEmail}}')\r",
+							"let user1newName = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"\r",
+							"pm.collectionVariables.set(\"user1login\", user1login);\r",
+							"console.log(pm.collectionVariables.get(\"user1login\"));\r",
+							"pm.collectionVariables.set(\"user1pswd\", user1pswd);\r",
+							"pm.collectionVariables.set(\"user1firstname\", user1firstname);\r",
+							"pm.collectionVariables.set(\"user1lastname\", user1lastname);\r",
+							"pm.collectionVariables.set(\"user1email\", user1email);\r",
+							"pm.collectionVariables.set(\"user1newName\", user1newName);\r",
+							"pm.collectionVariables.set(\"sess_id\", \"\");\r",
+							"\r",
+							"console.log(pm.collectionVariables.get(\"baseAuthURL\"))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user1pswd}}",
+							"type": "text"
+						},
+						{
+							"key": "firstname",
+							"value": "{{user1firstname}}",
+							"type": "text"
+						},
+						{
+							"key": "lastname",
+							"value": "{{user1lastname}}",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "{{user1email}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{baseAuthURL}}/register",
+					"protocol": "http",
+					"host": [
+						"{{baseAuthURL}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Вход пользователя 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(jsonData.status).to.eql(\"ok\");\r",
+							"\r",
+							"  pm.expect(pm.response.headers.get('X-UserId')).to.eql(pm.collectionVariables.get(\"user1Id\"));\r",
+							"  pm.expect(pm.response.headers.get('X-User')).to.eql(pm.collectionVariables.get(\"user1login\"));\r",
+							"  pm.expect(pm.response.headers.get('X-First-Name')).to.eql(pm.collectionVariables.get(\"user1firstname\"));\r",
+							"  pm.expect(pm.response.headers.get('X-Last-Name')).to.eql(pm.collectionVariables.get(\"user1lastname\"));\r",
+							"  pm.expect(pm.response.headers.get('X-Email')).to.eql(pm.collectionVariables.get(\"user1email\"));\r",
+							"\r",
+							"  // pm.environment.set('session_id', pm.cookies.get('session_id'));\r",
+							"  pm.collectionVariables.set('sess_id', pm.cookies.get('session_id'));\r",
+							"  console.log(\"session_id = \" + pm.collectionVariables.get(\"sess_id\"));\r",
+							"  console.log(\"logged\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "{{user1login}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{user1pswd}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{baseAuthURL}}/login",
+					"protocol": "http",
+					"host": [
+						"{{baseAuthURL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "Создание заказа",
 			"event": [
@@ -27,6 +180,7 @@
 							"var jsonOrder = pm.response.json();\r",
 							"console.info(\"jsonOrder = \" + jsonOrder.id);\r",
 							"pm.collectionVariables.set(\"order_id\", jsonOrder.id);\r",
+							"console.info(\"order_id = \"+pm.collectionVariables.get(\"order_id\"));\r",
 							"pm.collectionVariables.set(\"objectVersionNumber\", jsonOrder.objectVersionNumber);\r",
 							"pm.collectionVariables.set(\"order_items\", JSON.stringify(jsonOrder.items));\r",
 							"console.info(\"order_id = \" + pm.collectionVariables.get(\"order_id\") \r",
@@ -48,14 +202,19 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "x-userid",
-						"value": "101",
+						"key": "X-UserId",
+						"value": "{{user1Id}}",
+						"type": "text"
+					},
+					{
+						"key": "session_id",
+						"value": "{{sess_id}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": null,\r\n  \"idempotencyKey\": \"{{idempotencyKeyGUID}}\",\r\n  \"createdBy\": {{user_id}},\r\n  \"items\": [\r\n    {\r\n      \"id\": null,\r\n      \"quantity\": 1,\r\n      \"price\": 56.23\r\n    }\r\n  ],\r\n  \"shipDate\": \"2021-04-10\",\r\n  \"status\": \"PLACED\",\r\n  \"complete\": false\r\n}",
+					"raw": "{\r\n  \"id\": null,\r\n  \"idempotencyKey\": \"{{idempotencyKeyGUID}}\",\r\n  \"createdBy\": {{user1Id}},\r\n  \"items\": [\r\n    {\r\n      \"id\": null,\r\n      \"quantity\": 1,\r\n      \"price\": 56.23\r\n    }\r\n  ],\r\n  \"shipDate\": \"2021-04-10\",\r\n  \"status\": \"PLACED\",\r\n  \"complete\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -95,15 +254,18 @@
 							"pm.test(\"Status code is 200 and contains order_id = \" + pm.collectionVariables.get(\"order_id\"), () => {\r",
 							"  pm.response.to.have.status(200);\r",
 							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+							"  pm.expect(jsonData.length).to.be.greaterThan(0);\r",
 							"//   console.info(\"pm.collectionVariables.order_id = \" + pm.collectionVariables.get(\"order_id\"))\r",
-							"  pm.expect(_isContains(jsonData, \"billingOrderId\", parseInt(pm.collectionVariables.get(\"order_id\")))).to.be.true;\r",
+							"//   pm.expect(_isContains(jsonData, \"billingOrderId\", parseInt(pm.collectionVariables.get(\"order_id\")))).to.be.true;\r",
 							"});\r",
 							"\r",
 							"function _isContains(json, keyname, value) {\r",
 							" if(Array.isArray(json) == true) {\r",
 							"     console.info(\"Array json.length = \" + json.length);\r",
-							"    for (var i = 1; i<=json.length;i++) {\r",
+							"    for (var i = 0; i<=json.length;i++) {\r",
 							"        console.info(\"i = \" + i);\r",
+							"        console.info(\"i = \" + json[i][keyname]);\r",
 							"        if (_isContains(json[i], keyname, value)) {\r",
 							"            console.info(\"return true\");\r",
 							"            return true;\r",
@@ -129,9 +291,13 @@
 				"header": [
 					{
 						"key": "x-userid",
-						"value": "101",
-						"type": "text",
-						"disabled": true
+						"value": "{{user1Id}}",
+						"type": "text"
+					},
+					{
+						"key": "session_id",
+						"value": "{{session_id}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -144,7 +310,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{baseBillingServiceURL}}//accounts/billingOrders/{{user_id}}",
+					"raw": "http://{{baseBillingServiceURL}}//accounts/billingOrders/{{user1Id}}",
 					"protocol": "http",
 					"host": [
 						"{{baseBillingServiceURL}}"
@@ -153,7 +319,7 @@
 						"",
 						"accounts",
 						"billingOrders",
-						"{{user_id}}"
+						"{{user1Id}}"
 					]
 				}
 			},
@@ -185,8 +351,9 @@
 							"function _isContains(json, keyname, value) {\r",
 							" if(Array.isArray(json) == true) {\r",
 							"     console.info(\"Array json.length = \" + json.length);\r",
-							"    for (var i = 1; i<=json.length;i++) {\r",
+							"    for (var i = 0; i<=json.length;i++) {\r",
 							"        console.info(\"i = \" + i);\r",
+							"        console.info(\"i = \" + json[i][keyname]);\r",
 							"        if (_isContains(json[i], keyname, value)) {\r",
 							"            console.info(\"return true\");\r",
 							"            return true;\r",
@@ -219,9 +386,8 @@
 				"header": [
 					{
 						"key": "x-userid",
-						"value": "101",
-						"type": "text",
-						"disabled": true
+						"value": "{{user1Id}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -234,7 +400,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{baseNotificationServiceURL}}//accounts/notificationOrders/{{user_id}}",
+					"raw": "http://{{baseNotificationServiceURL}}//accounts/notificationOrders/{{user1Id}}",
 					"protocol": "http",
 					"host": [
 						"{{baseNotificationServiceURL}}"
@@ -243,7 +409,271 @@
 						"",
 						"accounts",
 						"notificationOrders",
-						"{{user_id}}"
+						"{{user1Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Повторное создание того же самого заказа",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});\r",
+							"\r",
+							"var expectedValue  = \"constraint [orders_idempotency_key_key];\";\r",
+							"pm.test(\"Body contains variable\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(expectedValue);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-userid",
+						"value": "{{user1Id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"objectVersionNumber\": 1,\r\n  \"idempotencyKey\": \"{{idempotencyKeyGUID}}\",\r\n  \"createdBy\": 101,\r\n  \"items\": [\r\n    {\r\n      \"quantity\": 1,\r\n      \"price\": 56.23\r\n    }\r\n  ],\r\n  \"shipDate\": \"2021-04-10\",\r\n  \"status\": \"PLACED\",\r\n  \"complete\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseOrderServiceURL}}/orders",
+					"protocol": "http",
+					"host": [
+						"{{baseOrderServiceURL}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменение заказа",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid'); \r",
+							"pm.collectionVariables.set(\"idempotencyKeyGUID\", uuid.v4());\r",
+							"console.log(\"idempotencyKeyGUID = \" + pm.collectionVariables.get(\"idempotencyKeyGUID\"));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-userid",
+						"value": "{{user1Id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{order_id}},\r\n  \"objectVersionNumber\": {{objectVersionNumber}},\r\n  \"idempotencyKey\": \"{{idempotencyKeyGUID}}\",\r\n  \"createdBy\": 101,\r\n  \"items\": {{order_items}},\r\n  \"shipDate\": \"2021-04-10\",\r\n  \"status\": \"PLACED\",\r\n  \"complete\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseOrderServiceURL}}/orders",
+					"protocol": "http",
+					"host": [
+						"{{baseOrderServiceURL}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменение заказа с меньшей версией",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid'); \r",
+							"pm.collectionVariables.set(\"idempotencyKeyGUID\", uuid.v4());\r",
+							"console.log(\"idempotencyKeyGUID = \" + pm.collectionVariables.get(\"idempotencyKeyGUID\"));\r",
+							"\r",
+							"pm.variables.set(\"version\", Number(pm.collectionVariables.get(\"objectVersionNumber\"))-1);\r",
+							"console.log(\"objectVersionNumber = \" + pm.variables.get(\"version\"));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});\r",
+							"\r",
+							"var expectedValue  = \"Versions is not match\";\r",
+							"pm.test(\"Body contains text\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(expectedValue);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-userid",
+						"value": "{{user1Id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{order_id}},\r\n  \"objectVersionNumber\": 0,\r\n  \"idempotencyKey\": \"{{idempotencyKeyGUID}}\",\r\n  \"createdBy\": 101,\r\n  \"items\": {{order_items}},\r\n  \"shipDate\": \"2021-04-10\",\r\n  \"status\": \"PLACED\",\r\n  \"complete\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseOrderServiceURL}}/orders",
+					"protocol": "http",
+					"host": [
+						"{{baseOrderServiceURL}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Выход",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"\r",
+							"  var jsonData = JSON.parse(responseBody);\r",
+							"  pm.expect(jsonData.status).to.eql(\"ok\");\r",
+							"  console.log(\"status: \" + jsonData.status);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseAuthURL}}/logout",
+					"protocol": "http",
+					"host": [
+						"{{baseAuthURL}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Очистка переменных + список сессий Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"user1login\", \"\");\r",
+							"pm.collectionVariables.set(\"user1pswd\", \"\");\r",
+							"pm.collectionVariables.set(\"user1firstname\", \"\");\r",
+							"pm.collectionVariables.set(\"user1lastname\", \"\");\r",
+							"pm.collectionVariables.set(\"user1email\", \"\");\r",
+							"pm.collectionVariables.set(\"user1newName\", \"\");\r",
+							"pm.collectionVariables.set(\"sess_id\", \"\");\r",
+							"\r",
+							"pm.variables.clear;\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "session_id={{sess_id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseAuthURL}}/sessions",
+					"protocol": "http",
+					"host": [
+						"{{baseAuthURL}}"
+					],
+					"path": [
+						"sessions"
 					]
 				}
 			},
@@ -256,6 +686,7 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
+					"",
 					""
 				]
 			}
@@ -273,31 +704,11 @@
 	"variable": [
 		{
 			"key": "baseAuthURL",
-			"value": "localhost:8080/auth"
+			"value": "arch.homework/auth-service"
 		},
 		{
 			"key": "baseOrderServiceURL",
 			"value": "arch.homework/order-service"
-		},
-		{
-			"key": "transaction_id",
-			"value": "78"
-		},
-		{
-			"key": "idempotencyKeyGUID",
-			"value": ""
-		},
-		{
-			"key": "objectVersionNumber",
-			"value": ""
-		},
-		{
-			"key": "order_id",
-			"value": ""
-		},
-		{
-			"key": "order_items",
-			"value": ""
 		},
 		{
 			"key": "baseBillingServiceURL",
@@ -308,8 +719,76 @@
 			"value": "arch.homework/notification-service"
 		},
 		{
-			"key": "user_id",
-			"value": "101"
+			"key": "user1Id",
+			"value": ""
+		},
+		{
+			"key": "user1login",
+			"value": ""
+		},
+		{
+			"key": "user1pswd",
+			"value": ""
+		},
+		{
+			"key": "user1firstname",
+			"value": ""
+		},
+		{
+			"key": "user1lastname",
+			"value": ""
+		},
+		{
+			"key": "user1email",
+			"value": ""
+		},
+		{
+			"key": "user2Id",
+			"value": ""
+		},
+		{
+			"key": "user2login",
+			"value": ""
+		},
+		{
+			"key": "user2pswd",
+			"value": ""
+		},
+		{
+			"key": "user2firstname",
+			"value": ""
+		},
+		{
+			"key": "user2lastname",
+			"value": ""
+		},
+		{
+			"key": "user2email",
+			"value": ""
+		},
+		{
+			"key": "user1newName",
+			"value": ""
+		},
+		{
+			"key": "sess_id",
+			"value": ""
+		},
+		{
+			"key": "idempotencyKeyGUID",
+			"value": ""
+		},
+		{
+			"key": "order_id",
+			"value": ""
+		},
+		{
+			"key": "objectVersionNumber",
+			"value": ""
+		},
+		{
+			"key": "order_items",
+			"value": ""
 		}
 	]
 }

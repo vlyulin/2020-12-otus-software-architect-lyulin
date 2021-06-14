@@ -28,17 +28,28 @@ helm install cw-postgres -f ./hw10-course-work/postgresql/values.yaml bitnami/po
 ```
 ### Проверить работоспособность через Port forward
 ```
-kubectl port-forward --namespace default svc/hw08-postgres-postgresql 5432:5432
+kubectl port-forward --namespace default svc/cw-postgres-postgresql 5432:5432
 ```
 
 ##Установить сервис order-service
+```
 helm install order-service ./hw10-course-work/OrderService/kubernates/order-service
+```
+
+## Установить сервис auth-service
+```
+helm install auth-service .\hw10-course-work\Auth\kubernates\auth-service
+```
 
 ##Установить сервис billing-service
+```
 helm install billing-service ./hw10-course-work/BillingService/kubernates/billing-service
+```
 
 ##Установить сервис notification-service
+```
 helm install notification-service ./hw10-course-work/NotificationService/kubernates/notification-service
+```
 
 ##Тестирование с помощью скриптов Postman
 
@@ -65,3 +76,22 @@ newman run ./hw10-course-work/postman/hw10-course-work.postman_collection.json -
 В текущей директории будет создана папка newman с отчетом о результате выполнения тестов.
 
 Результат представлен в файле ./hw10-course-work/postman/newman/hw10-course-work-2021-06-08-17-19-26-918-0.html 
+
+------
+
+## Установить Zipkin сервер
+
+### Установить Zipkin сервер
+kubectl apply -f .\zipkin-server-pod.yaml
+kubectl apply -f .\zipkin-service.yaml
+
+### Port forward
+```
+kubectl port-forward --namespace default svc/zipkin-service 9411:9411
+```
+
+Альтернатива
+
+```
+docker run -d -p 9411:9411 openzipkin/zipkin-slim
+```

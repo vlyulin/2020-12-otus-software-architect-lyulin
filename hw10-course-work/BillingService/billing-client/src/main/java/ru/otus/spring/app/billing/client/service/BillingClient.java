@@ -48,6 +48,7 @@ public class BillingClient implements TwoPCResource {
 
         try {
             resourceState = billingFeignClient.canCommit(transactionId, billingOrderDTO);
+            log.info("Get resourceState = "+resourceState.toString());
         }
         catch (Exception e) {
             log.info("billingFeignClient error: " + e.getMessage());

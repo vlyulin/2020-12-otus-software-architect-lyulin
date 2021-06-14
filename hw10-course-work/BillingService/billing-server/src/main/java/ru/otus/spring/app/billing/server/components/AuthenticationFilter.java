@@ -21,8 +21,9 @@ public class AuthenticationFilter extends GenericFilterBean {
         // Each header field consists of a case-insensitive field name
         // https://tools.ietf.org/html/rfc7230#section-3.2
 
+	String path = httpRequest.getRequestURI();
         String xUserdId = httpRequest.getHeader("x-userid");
-        if(xUserdId != null) {
+        if(xUserdId != null || path.startsWith("/health")) {
             chain.doFilter(request, response);
             return;
         }

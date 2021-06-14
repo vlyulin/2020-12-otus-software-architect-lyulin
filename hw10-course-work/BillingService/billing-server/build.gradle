@@ -35,6 +35,9 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.2'
 
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: '3.0.3'
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-sleuth-zipkin', version: '3.0.3'
+
 //    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.5.0'
 //    implementation group: 'org.apiguardian', name: 'apiguardian-api', version: '1.1.0'
 //    implementation group: 'org.opentest4j', name: 'opentest4j', version: '1.2.0'

@@ -5,8 +5,10 @@
 Из директории проекта 2020-12-otus-software-architect-lyulin выполнить команду: 
 
 ```
+gradlew :hw10-course-work:BillingService:billing-client:build -x test
 gradlew :hw10-course-work:BillingService:billing-server:build -x test
 или
+gradle hw10-course-work:BillingService:billing-client:build -x test
 gradle hw10-course-work:BillingService:billing-server:build -x test
 ```
 

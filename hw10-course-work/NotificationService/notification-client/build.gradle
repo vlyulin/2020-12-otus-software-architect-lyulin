@@ -43,6 +43,10 @@ dependencies {
         exclude group: 'org.hdrhistogram', module: 'HdrHistogram'
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     }
+
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: '3.0.3'
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-sleuth-zipkin', version: '3.0.3'
+
 }
 
 dependencyManagement {

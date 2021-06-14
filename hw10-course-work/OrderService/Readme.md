@@ -5,9 +5,18 @@
 Из директории проекта 2020-12-otus-software-architect-lyulin выполнить команду: 
 
 ```
+gradlew :hw10-course-work:OrderService:order-client:build -x test
 gradlew :hw10-course-work:OrderService:order-server:build -x test
 или
-gradle hw10-course-work:OrderService:order-server:build -x test
+gradle :hw10-course-work:OrderService:order-client:build -x test
+gradle :hw10-course-work:OrderService:order-server:build -x test
+```
+
+\\ -Dspring.profiles.active=kubernates
+
+Проверить запуск приложения
+```
+java -DDB_DRIVER=org.postgresql.Driver -DDB_URL=jdbc:postgresql://localhost:5432/postgres -DDB_USERNAME=postgresadmin -DDB_PASSWORD=pswd -jar ./hw10-course-work/OrderService/order-server/build/libs/order-server-1.0.0.jar
 ```
 
 ## Собрать docker-файла с приложением

@@ -4,6 +4,14 @@ plugins {
     id 'java'
 }
 
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 group 'ru.otus'

@@ -64,8 +64,8 @@ spec:
             httpGet:
               path: /health/readiness
               port: http
-            failureThreshold: 3
-            periodSeconds: 15
+            failureThreshold: 5
+            periodSeconds: 30
           env:
             - name: DB_URL
               valueFrom:
