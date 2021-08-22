@@ -1,235 +1,229 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4" />
 
-# Курс "Software Architect" в OTUS
+# Course "Microservices Architect", OTUS
+[Russian](README.ru.md)
 
-# Содержание:
-* [Студент](#Студент)
-* [Модуль hw01-Kubernetes](#Модуль-hw01-Kubernetes)
-* [Модуль hw02-Kubernetes](#Модуль-hw02-Kubernetes)
-* [Модуль hw03-Prometheus](#Модуль-hw03-Prometheus)
-* [Модуль hw05-Apigateway](#Модуль-hw05-Apigateway)
-* [Модуль hw07-StreamProcessing](#Модуль-hw07-StreamProcessing)
-* [Модуль hw08-Idempotency](#Модуль-hw08-Idempotency)
-* [Модуль hw09-Decomposition-patterns](#Модуль-hw09-Decomposition-patterns)
-* [Модуль hw10-course-work](#Модуль-hw10-course-work)
+# Content:
+* [Student](#Student)
+* [Module hw01-Kubernetes](#Module-hw01-Kubernetes)
+* [Module hw02-Kubernetes](#Module-hw02-Kubernetes)
+* [Module hw03-Prometheus](#Module-hw03-Prometheus)
+* [Module hw05-Apigateway](#Module-hw05-Apigateway)
+* [Module hw07-StreamProcessing](#Module-hw07-StreamProcessing)
+* [Module hw08-Idempotency](#Module-hw08-Idempotency)
+* [Module hw09-Decomposition-patterns](#Module-hw09-Decomposition-patterns)
+* [Module hw10-course-work](#Module-hw10-course-work)
 
-# Студент
-ФИО слушателя: Люлин Вадим Евгеньевич
-Название курса: 
-Группа: 2020-12
+# Student
+Full name of the listener: Vadim Lyulin  
+Course: Microservices Architect  
+Group: 2020-12
 
-## Модуль hw01-Kubernetes<a name="Модуль-hw01-Kubernetes"></a>
-Основы работы с Kubernetes (часть 2)
-Создать минимальный сервис, который
-1) отвечает на порту 8000
-2) имеет http-метод
+## Module hw01-Kubernetes<a name="Module-hw01-Kubernetes"></a>
+Kubernetes Basics (part 2)
+Homework: Create a minimal service that
+1) answers at the port 8000
+2) has http-method
 GET /health/
 RESPONSE: {"status": "OK"}
 
-Cобрать локально образ приложения в докер.
-Запушить образ в dockerhub
+Build a docker image of the application locally.
+Push the image to dockerhub.
 
-Написать манифесты для деплоя в k8s для этого сервиса.
+Write deployment manifests in k8s for this service.
 
-Манифесты должны описывать сущности Deployment, Service, Ingress.
-В Deployment могут быть указаны Liveness, Readiness пробы.
-Количество реплик должно быть не меньше 2. Image контейнера должен быть указан с Dockerhub.
+Manifests should describe the Deployment, Service, Ingress entities.
+In Deployment, Liveness, Readiness of the sample can be specified.
+The number of replicas must be at least 2. The container image must be listed from Dockerhub.
 
-В Ingress-е должно быть правило, которое форвардит все запросы с /otusapp/{student name}/* на сервис с rewrite-ом пути. Где {student name} - это имя студента.
+The Ingress should have a rule that will forward all requests from / otusapp / {student name} / * to the service with a rewrite path. Where {student name} is the name of the student.
 
-Хост в ингрессе должен быть arch.homework. В итоге после применения манифестов GET запрос на http://arch.homework/otusapp/{student name}/health должен отдавать {“status”: “OK”}.
+Ingress host should be arch.homework. As a result, after applying the GET manifests, the request for http: //arch.homework/otusapp/ {student name} / health should return {“status”: “OK”}.
 
-На выходе предоставить
-0) ссылку на github c манифестами. Манифесты должны лежать в одной директории, так чтобы можно было их все применить одной командой kubectl apply -f .
-1) url, по которому можно будет получить ответ от сервиса (либо тест в postmanе). 
+Should be provided:
+0) link to github with manifests. Manifests must be in the same directory so that you can apply them all with one command kubectl apply -f.
+1) url, by which you can get a response from the service (or a test in postman).
 
-## Модуль hw02-Kubernetes<a name="Модуль-hw02-Kubernetes"></a>
+## Module hw02-Kubernetes<a name="Module-hw02-Kubernetes"></a>
 
-Домашнее задание
-Инфраструктурные паттерны
-Сделать простейший RESTful CRUD по созданию, удалению, просмотру и обновлению пользователей.
-Пример API - https://app.swaggerhub.com/apis/otus55/users/1.0.0
+Homework: Infrastructure patterns  
+Make the simplest RESTful CRUD to create, delete, view and update users.
+API example - https://app.swaggerhub.com/apis/otus55/users/1.0.0
 
-Добавить базу данных для приложения.
-Конфигурация приложения должна хранится в Configmaps.
-Доступы к БД должны храниться в Secrets.
-Первоначальные миграции должны быть оформлены в качестве Job-ы, если это требуется.
-Ingress-ы должны также вести на url arch.homework/ (как и в прошлом задании)
+Add a database for the application.
+Application configuration should be stored in Configmaps.
+Database accesses should be stored in Secrets.
+Initial migrations must be formalized as a Job, if required.
+Ingress-s should also lead to the url arch.homework / (as in the previous task)
 
-На выходе должны быть предоставлена
-1) ссылка на директорию в github, где находится директория с манифестами кубернетеса
-2) инструкция по запуску приложения.
-- команда установки БД из helm, вместе с файлом values.yaml.
-- команда применения первоначальных миграций
-- команда kubectl apply -f, которая запускает в правильном порядке манифесты кубернетеса
-3) Postman коллекция, в которой будут представлены примеры запросов к сервису на создание, получение, изменение и удаление пользователя. Важно: в postman коллекции использовать базовый url - arch.homework.
+Should be provided:
+1) link to the directory in github where the directory with Kubernetes manifests is located
+2) instructions for launching the application.
+- the command to install the database from helm, along with the values.yaml file.
+- apply initial migrations command
+- kubectl apply -f command, which runs Kubernetes manifests in the correct order
+3) Postman collection, which will present examples of requests to the service to create, get, change and delete a user. Important: in the postman collection, use the base url - arch.homework.
 
 
-Задание со звездочкой:
-+3 балла за шаблонизацию приложения в helm 3 чартах
-+2 балла за использование официального helm чарта для БД
+Extra tasks:
++3 point for templating the application in helm 3 charts
++2 points for using the official helm chart for the database
 
-## Модуль hw03-Prometheus<a name="Модуль-hw03-Prometheus"></a>
+## Module hw03-Prometheus<a name="Module-hw03-Prometheus"></a>
 
-Домашнее задание
+Homework: Prometheus. Grafana
 
-Prometheus. Grafana
+Instrument the service from the previous task with metrics in the Prometheus format using a library for your framework and programming language.
 
-Инструментировать сервис из прошлого задания метриками в формате Prometheus с помощью библиотеки для вашего фреймворка и ЯП.
+Make a dashboard in Grafana, in which there would be metrics broken down by API methods:
 
-Сделать дашборд в Графане, в котором были бы метрики с разбивкой по API методам:
-
-    Latency (response time) с квантилями по 0.5, 0.95, 0.99, max
+    Latency (response time) with quantiles of 0.5, 0.95, 0.99, max
     RPS
-    Error Rate - количество 500ых ответов
+    Error Rate - number of 500 responses
 
-Добавить в дашборд графики с метрикам в целом по сервису, взятые с nginx-ingress-controller:
+Add graphs with metrics for the whole service to the dashboard, taken from nginx-ingress-controller:
 
-    Latency (response time) с квантилями по 0.5, 0.95, 0.99, max
+    Latency (response time) with quantiles of 0.5, 0.95, 0.99, max
     RPS
-    Error Rate - количество 500ых ответов
+    Error Rate - number of 500 responses
 
-Настроить алертинг в графане на Error Rate и Latency.
+Set up alert in Grafana for Error Rate and Latency.
 
-На выходе должно быть: 0) скриншоты дашборды с графиками в момент стресс-тестирования сервиса. Например, после 5-10 минут нагрузки.
+Should be provided:: 0) screenshots of the dashboards with charts at the time of stress testing of the service. For example, after 5-10 minutes of exercise.
 
-    json-дашборды.
+    json dashboards..
 
-Задание со звездочкой (+5 баллов) Используя существующие системные метрики из кубернетеса, добавить на дашборд графики с метриками:
+Extra tasks (+5 points) Using the existing system metrics from Kubernetes, add graphs with metrics to the dashboard:
 
-    Потребление подами приложения памяти
-    Потребление подами приолжения CPU
+    Application pod memory consumption
+    Pod consumption of the CPU application
 
-Инструментировать базу данных с помощью экспортера для prometheus для этой БД. Добавить в общий дашборд графики с метриками работы БД.
+Instrument the database with the prometheus exporter for this database. Add graphs with database performance metrics to the common dashboard.
 
-Альтернативное задание на 1 балл (если не хочется самому ставить prometheus в minikube) - https://www.katacoda.com/schetinnikov/scenarios/prometheus-client
+Alternative task for 1 point (if you don't want to put prometheus in minikube yourself) - https://www.katacoda.com/schetinnikov/scenarios/prometheus-client
 
-## Модуль hw05-Apigateway<a name="Модуль-hw05-Apigateway"></a>
+## Module hw05-Apigateway<a name="Module-hw05-Apigateway"></a>
 
-Домашнее задание
+Homework: Backend for frontends. Apigateway
 
-Backend for frontends. Apigateway
+Add user authentication and registration to the application.
 
-Добавить в приложение аутентификацию и регистрацию пользователей.
+Implement the "Change and View Data in a Customer Profile" scenario. The user is registering. He goes under him and receives data about his profile at a certain URL. Can change the data in the profile. Profile data for reading and editing should not be available to other clients (authenticated or not).
 
-Реализовать сценарий "Изменение и просмотр данных в профиле клиента". Пользователь регистрируется. Заходит под собой и по определенному урлу получает данные о своем профиле. Может поменять данные в профиле. Данные профиля для чтения и редактирования не должны быть доступны другим клиентам (аутентифицированным или нет).
+Should be provided: 0) description of the architectural solution and the scheme of interaction of services (in the form of a picture)
 
-На выходе должны быть 0) описание архитектурного решения и схема взаимодействия сервисов (в виде картинки)
+    application installation command (from helm or from manifests). Be sure to indicate in which namespace you want to install. 1 *) api-gateway installation command, if different from nginx-ingress.
+    postman tests that run the script:
 
-    команда установки приложения (из helm-а или из манифестов). Обязательно указать в каком namespace нужно устанавливать. 1*) команда установки api-gateway, если он отличен от nginx-ingress.
-    тесты постмана, которые прогоняют сценарий:
+    user registration 1
+    checking that changing and getting user profile is not available without login
+    user login 1
+    change user profile 1
+    checking that the profile has changed
+    exit * (if exists)
+    user registration 2
+    user login 2
+    checking that user 2 does not have access to read and edit the profile of user 1.
 
-    регистрация пользователя 1
-    проверка, что изменение и получение профиля пользователя недоступно без логина
-    вход пользователя 1
-    изменение профиля пользователя 1
-    проверка, что профиль поменялся
-    выход* (если есть)
-    регистрация пользователя 2
-    вход пользователя 2
-    проверка, что пользователь2 не имеет доступа на чтение и редактирование профиля пользователя1.
+In tests it is necessary to have
 
-В тестах обязательно
+    availability of {{baseUrl}} for url
+    using domain arch.homework as initial value {{baseUrl}}
+    using randomly generated data in a script
+    displaying request data and response data when run from the command line with newman.
 
-    наличие {{baseUrl}} для урла
-    использование домена arch.homework в качестве initial значения {{baseUrl}}
-    использование сгенерированных случайно данных в сценарии
-    отображение данных запроса и данных ответа при запуске из командной строки с помощью newman.
+## Module hw07-StreamProcessing<a name="Module-hw07-StreamProcessing"></a>
 
-## Модуль hw07-StreamProcessing<a name="Модуль-hw07-StreamProcessing"></a>
+Homework: Stream processing
 
-Домашнее задание
+Implement an ordering service. Billing service. Service of notifications.
 
-Stream processing
+When creating a user, you need to create an account in the billing service. The billing service should be able to put money on the account and withdraw money.
 
-Реализовать сервис заказа. Сервис биллинга. Сервис нотификаций.
+The notification service allows you to send a message by email. And allows you to get a list of messages by API method.
 
-При создании пользователя, необходимо создавать аккаунт в сервисе биллинга. В сервисе биллинга должна быть возможность положить деньги на аккаунт и снять деньги.
+The user can create an order. The order has a parameter - the price of the order. The order takes place in 2 stages:
 
-Сервис нотификаций позволяет отправить сообщение на email. И позволяет получить список сообщений по методу API.
+    first, we withdraw money from the user using the billing service
+    we send the user an e-mail message with the results of ordering. If the billing has confirmed the payment, a letter of happiness should be sent. If not, then a letter of grief.
 
-Пользователь может создать заказ. У заказа есть параметр - цена заказа. Заказ происходит в 2 этапа:
+We simplify and believe that nothing bad can happen to services (they cannot fall, etc.). The service does not actually send notifications, but simply saves them to the database.
 
-    сначала снимаем деньги с пользователя с помощью сервиса биллинга
-    отсылаем пользователю сообщение на почту с результатами оформления заказа. Если биллинг подтвердил платеж, должно отослаться письмо счастья. Если нет, то письмо горя.
+THEORETICAL PART (5 points): 0) Design the interaction of services when creating orders. Provide options for interactions in the following styles in the form of a sequence diagram describing the API in IDL:
 
-Упрощаем и считаем, что ничего плохого с сервисами происходить не может (они не могут падать и т.д.). Сервис нотификаций на самом деле не отправляет, а просто сохраняет в БД.
+    only HTTP communication
+    event interaction with the use of a message broker for notifications (notifications)
+    Event Collaboration communication style using a message broker
+    the option that seems to you the most adequate for solving this problem. If it matches one of the options above, just check it.
 
-ТЕОРЕТИЧЕСКАЯ ЧАСТЬ (5 баллов): 0) Спроектировать взаимодействие сервисов при создании заказов. Предоставить варианты взаимодействий в следующих стилях в виде sequence диаграммы с описанием API на IDL:
+PRACTICAL PART (5 points): Choose one of the options and implement it. The output should be 0) a description of the architectural solution and a diagram of the interaction of services (in the form of a picture)
 
-    только HTTP взаимодействие
-    событийное взаимодействие с использование брокера сообщений для нотификаций (уведомлений)
-    Event Collaboration cтиль взаимодействия с использованием брокера сообщений
-    вариант, который вам кажется наиболее адекватным для решения данной задачи. Если он совпадает одним из вариантов выше - просто отметить это.
+    application installation command (from helm or from manifests). Be sure to indicate in which namespace you want to install.
+    postman tests that run the script:
 
-ПРАКТИЧЕСКАЯ ЧАСТЬ (5 баллов): Выбрать один из вариантов и реализовать его. На выходе должны быть 0) описание архитектурного решения и схема взаимодействия сервисов (в виде картинки)
+    Create user. A billing account must be created.
+    Put money into the user's account through the billing service.
+    Make an order for which there is enough money.
+    View the money in the user's account and make sure that they have been withdrawn.
+    View sent messages in the notification service and make sure that the message was sent
+    Make an order for which there is not enough money.
+    View the money in the user's account and make sure that their amount has not changed.
+    View sent messages in the notification service and make sure that the message was sent.
 
-    команда установки приложения (из helm-а или из манифестов). Обязательно указать в каком namespace нужно устанавливать.
-    тесты постмана, которые прогоняют сценарий:
+Required in tests
 
-    Создать пользователя. Должен создаться аккаунт в биллинге.
-    Положить деньги на счет пользователя через сервис биллинга.
-    Сделать заказ, на который хватает денег.
-    Посмотреть деньги на счету пользователя и убедиться, что их сняли.
-    Посмотреть в сервисе нотификаций отправленные сообщения и убедиться, что сообщение отправилось
-    Сделать заказ, на который не хватает денег.
-    Посмотреть деньги на счету пользователя и убедиться, что их количество не поменялось.
-    Посмотреть в сервисе нотификаций отправленные сообщения и убедиться, что сообщение отправилось.
+    availability of {{baseUrl}} for url
+    using domain arch.homework as initial value {{baseUrl}}
+    displaying request data and response data when run from the command line with newman.
 
-В тестах обязательно
+## Module hw08-Idempotency<a name="Module-hw08-Idempotency"></a>
 
-    наличие {{baseUrl}} для урла
-    использование домена arch.homework в качестве initial значения {{baseUrl}}
-    отображение данных запроса и данных ответа при запуске из командной строки с помощью newman.
+Idempotency and API commutability in HTTP and queues
 
-## Модуль hw08-Idempotency<a name="Модуль-hw08-Idempotency"></a>
+Create the service "Order" (or use the service from the last lesson) and make idempote for one of its methods, for example, "create order".
 
-Идемпотетность и коммутативность API в HTTP и очередях
+The output should be: 0) a description of what pattern was used to implement idempotency
+* application installation command (from helm or from manifests). Be sure to indicate in which namespace you need to install and the namespace creation command, if it is important for the service.
+* tests in postman
 
-Создайте сервис "Заказ" (или используйте сервис из прошлого занятия) и для одного из его методов, например, "создание заказа" сделать идемпотетным.
+In tests it is necessary to have
 
-На выходе должно быть: 0) описание того, какой паттерн для реализации идемпотентности использовался 
-* команда установки приложения (из helm-а или из манифестов). Обязательно указать в каком namespace нужно устанавливать и команду создания namespace, если это важно для сервиса.
-* тесты в postman
+* using domain arch.homework as initial value {{baseUrl}}
 
-В тестах обязательно
+## Module hw09-Decomposition-patterns<a name="Module-hw09-Decomposition-patterns"></a>
 
-* использование домена arch.homework в качестве initial значения {{baseUrl}}
+Microservices decomposition patterns
 
-## Модуль hw09-Decomposition-patterns<a name="Модуль-hw09-Decomposition-patterns"></a>
+Divide your application into multiple microservices for future changes.
 
-Паттерны декомпозиции микросервисов
+Try to make several splits and try to evaluate them. Select the option that you will implement.
 
-Разделите ваше приложение на несколько микросервисов с учетом будущих изменений.
+At the output, you must provide
 
-Попробуйте сделать несколько вариантов разбиений и попробуйте их оценить. Выберите вариант, который вы будете реализовывать.
+* Custom scripts
+* The general scheme of interaction of services.
+* For each service, describe the purpose of the service and its area of responsibility.
+* Describe the contracts for the interaction of services with each other.
 
-На выходе вы должны предоставить
+## Module hw10-course-work<a name="Module-hw10-course-work"></a>
 
-* Пользовательские сценарии
-* Общую схему взаимодействия сервисов.
-* Для каждого сервиса опишите назначение сервиса и его зону ответственности.
-* Опишите контракты взаимодействия сервисов друг с другом.
+Distributed transactions
 
-## Модуль hw10-course-work<a name="Модуль-hw10-course-work"></a>
+Implement a distributed transaction.
+You can use the script below for an online store or create your own.
 
-Распределенные транзакции
+Default scenario: Implement the services "Payment", "Warehouse", "Delivery".
 
-Реализовать распределенную транзакцию. 
-Можно использовать приведенный ниже сценарий для интернет-магазина или придумать свой.
+For the "Order" service, within the "create order" method, implement a distributed transaction mechanism (based on the Saga or two-phase commit).
+When creating an order, you must:
+* in the "Payment" service, make sure that the payment went through
+* in the "Warehouse" service to reserve a specific product in the warehouse
+* in the "Delivery" service, reserve a courier for a specific time slot.
 
-Дефолтный сценарий: Реализовать сервисы "Платеж", "Склад", "Доставка".
+If at least one of the items did not work out, you need to roll back all the other changes.
 
-Для сервиса "Заказ", в рамках метода "создание заказа" реализовать механизм распределенной транзакции (на основе Саги или двухфазного коммита). 
-Во время создания заказа необходимо:
-* в сервисе "Платеж" убедиться, что платеж прошел
-* в сервисе "Склад" зарезервировать конкретный товар на складе
-* в сервисе "Доставка" зарезервировать курьера на конкретный слот времени.
-
-Если хотя бы один из пунктов не получилось сделать, необходимо откатить все остальные изменения.
-
-На выходе должно быть: 
-* описание того, какой паттерн для реализации распределенной транзакции использовался
-* команда установки приложения (из helm-а или из манифестов). Обязательно указать в каком namespace нужно устанавливать и команду создания namespace, если это важно для сервиса.
-* тесты в postman. В тестах обязательно использование домена arch.homework в качестве initial значения {{baseUrl}}
+Should be provided:
+* a description of what pattern was used to implement a distributed transaction
+* application installation command (from helm or from manifests). Be sure to indicate in which namespace you need to install and the namespace creation command, if it is important for the service.
+* tests in postman. In tests, it is mandatory to use the arch.homework domain as the initial value {{baseUrl}}
